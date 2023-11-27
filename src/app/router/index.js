@@ -5,6 +5,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import authRouter from '@/app/modules/auth/router'
 import setupRouter from '@/app/modules/setup/router'
+import repairRouter from '@/app/modules/repair/router'
 
 const routes = [
   {
@@ -18,6 +19,10 @@ const routes = [
   {
     path: '/setup',
     ...setupRouter
+  },
+  {
+    path: '/repair-module',
+    ...repairRouter
   }
 ]
 

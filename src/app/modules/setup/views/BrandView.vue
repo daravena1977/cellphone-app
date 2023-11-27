@@ -3,7 +3,7 @@
     <hr>
     <div class="d-flex gap-3">
         <button @click="newBrand" class="btn btn-primary w-25">Nueva Marca</button>
-        <input v-model="name" class="form-control w-25" type="text" placeholder="ingrese marca...">
+        <input @keypress.enter="newBrand" v-model="name" class="form-control w-25" type="text" placeholder="ingrese marca...">
     </div>
     <hr>
 

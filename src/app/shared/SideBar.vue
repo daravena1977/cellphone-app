@@ -3,7 +3,7 @@
         <div class="col-2">
             <div class="sidebar-container bg-primary">
                 <ul class="mt-2 px-2">
-                    <li class="mt-2 mx-0" v-for="link in links" :key="link.to">
+                    <li class="mt-3 mx-0" v-for="link in links" :key="link.to">
                         <router-link  :to="{ name: link.to }">{{ link.name }}</router-link>
                     </li>
                 </ul>

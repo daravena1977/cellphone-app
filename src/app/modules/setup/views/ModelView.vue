@@ -10,7 +10,8 @@
       <button @click="addModel" class="btn btn-secondary">
         Agregar modelo
       </button>
-      <input v-model="newModel.name" class="form-control w-25" type="text" placeholder="Ingrese modelo..." />
+      <input @keypress.enter="addModel" v-model="newModel.name" class="form-control w-25" type="text"
+        placeholder="Ingrese modelo..." />
     </template>
   </div>
 

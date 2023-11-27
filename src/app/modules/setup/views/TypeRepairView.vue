@@ -5,7 +5,13 @@
     <button @click="addTypeRepair" class="btn btn-primary w-25">
       Agregar tipo
     </button>
-    <input v-model="name" class="form-control w-25" type="text" placeholder="ingrese tipo de reparación..." />
+    <input 
+      @keypress.enter="addTypeRepair" 
+      v-model="name" 
+      class="form-control w-25" 
+      type="text" 
+      placeholder="ingrese tipo de reparación..." 
+    />
   </div>
   <hr />
 

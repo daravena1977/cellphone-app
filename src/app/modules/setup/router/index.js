@@ -4,7 +4,7 @@ export default {
     component: () => import(/* webpackChunkName: "setup" */ '@/app/modules/setup/layouts/SetupLayout'),
     children: [
         {
-            path: '',
+            path: 'brand',
             name: 'brand',
             component: () => import(/* webpackChunkName: "setup-brand" */ '@/app/modules/setup/views/BrandView'),   
         },
