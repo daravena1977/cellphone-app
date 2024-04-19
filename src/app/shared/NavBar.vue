@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="container-navbar">
     <nav class="navbar bg-primary navbar-expand-lg">
   <div class="container d-flex align-items-end">
     <a class="navbar-brand" href="#"><span>CellApp</span></a>
@@ -36,6 +36,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container-navbar {
+  position:sticky;
+  top: 0;
+  width: 100%;
+  
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

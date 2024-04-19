@@ -36,4 +36,8 @@ export default {
 
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.form-select {
+    font-size: 0.8rem;
+}
+</style>

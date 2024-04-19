@@ -7,6 +7,4 @@ const cellPhoneApi = axios.create({
     }
 })
 
-
-
 export default cellPhoneApi

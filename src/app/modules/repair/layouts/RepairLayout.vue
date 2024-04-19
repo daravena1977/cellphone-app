@@ -1,6 +1,6 @@
 <template>
-  <NavBar />
-  <hr>
+  <NavBar class="container-navbar" />
+  
   <SideBar :links="optionsSideBar" />
 </template>
 
@@ -24,6 +24,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.container-navbar {
+  margin-bottom: 20px;
+}
 
 </style>

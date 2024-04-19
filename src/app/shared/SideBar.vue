@@ -30,9 +30,11 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar-container {
+    position: sticky;
+    top: 80px;
     border: solid 0.5px #c4bfbf;
     border-radius: 10px;
-    height: 70vh;
+    height: 80vh;
 }
 
 li {

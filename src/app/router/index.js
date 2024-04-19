@@ -8,7 +8,7 @@ import setupRouter from '@/app/modules/setup/router'
 import repairRouter from '@/app/modules/repair/router'
 
 const routes = [
-  {
+  { 
     path: '/',
     redirect: '/auth',
   },
