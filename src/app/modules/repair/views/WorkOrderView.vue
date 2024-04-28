@@ -2,23 +2,21 @@
   <div class="form-order">
 
     <div class="personal-data">
-      <PersonalData @form-data="setDataForm" class="mb-3"
-      :saved="savedWorkOrder" :correlative="correlative"/>
+      <PersonalData @form-data="setDataForm" @sendClientExists="onSendClientExists"  class="mb-3" :saved="savedWorkOrder" :correlative="correlative" :resetStatus="resetStatus" />
     </div>
 
     <div class="repair-data form-control">
       <div class="d-flex flex-column">
         <RepairData class="mb-4" />
-        <div class="table-repair">
-          <TableRepairData @edit-price="newPrice" @delete-repair="removeRepair"
-          :repairsData="getRepairsData" />
+        <div>
+          <TableRepairData v-if="getRepairsData.length > 0" class="table-repair" @edit-price="newPrice" @delete-repair="removeRepair" :repairsData="getRepairsData" />
         </div>
-        
+
       </div>
 
 
       <div class="form-floating mb-4">
-        <textarea class="form-control h-50" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+        <textarea v-model="description" class="form-control h-50" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
         <label for="floatingTextarea">Comentarios</label>
       </div>
 
@@ -28,7 +26,10 @@
       </div>
       <hr>
       <div class="d-flex gap-3 justify-content-end mb-3">
-        <button v-if="correlative == 0" @click="setCorrelativeNumber" class="btn btn-warning w-25" :disabled="completeInformation">
+        <ModalWorkOrders :workOrdersProps="getWortkOrdersClient" v-if="clientExists" />
+
+        <button v-if="correlative == 0" @click="setCorrelativeNumber" class="btn btn-success w-25"
+          :disabled="completeInformation">
           Asignar número
         </button>
 
@@ -36,7 +37,7 @@
           Cancelar
         </button>
 
-        <button v-if="correlative > 0" @click="newOrder" class="btn btn-success w-25">
+        <button v-if="correlative > 0" @click="clientExists ? addWorkOrder() : newOrder()" class="btn btn-success w-25">
           Guardar
         </button>
       </div>
@@ -52,7 +53,8 @@ export default {
   components: {
     PersonalData: defineAsyncComponent(() => import('@/app/shared/PersonalData')),
     RepairData: defineAsyncComponent(() => import('@/app/shared/RepairData')),
-    TableRepairData: defineAsyncComponent(() => import('@/app/shared/TableRepairData'))
+    TableRepairData: defineAsyncComponent(() => import('@/app/shared/TableRepairData')),
+    ModalWorkOrders: defineAsyncComponent(() => import('@/app/shared/ModalWorkOrders'))
   },
 
   data() {
@@ -63,12 +65,25 @@ export default {
       },
       dataForm: {},
       savedWorkOrder: false,
-      correlative: 0
+      correlative: 0,
+      clientExists: false,
+      description: '',
+      allSelected: false,
+      resetStatus: false
+    }
+    
+  },
+
+  watch: {
+    dataform(value) {
+      if(Object.keys(value).length > 0) {
+        this.savedWorkOrder = false
+      }
     }
   },
 
   methods: {
-    ...mapActions('repair', (['changePrice', 'createWorkOrder','getCorrelativeWorkOrder'])),
+    ...mapActions('repair', (['changePrice', 'createWorkOrder', 'getCorrelativeWorkOrder', 'addWorkOrderClientExists'])),
     ...mapMutations('repair', (['resetRepairsTable'])),
 
 
@@ -77,9 +92,11 @@ export default {
       this.$store.state.repair.repairs.splice(id, 1)
     },
 
-    setDataForm(data) {
+    setDataForm(data, savedOrder) {
       this.dataForm = data
       this.dataForm.repairCellphones = this.repairs
+      this.savedWorkOrder = savedOrder
+
     },
 
     newPrice(value) {
@@ -92,28 +109,59 @@ export default {
       console.log(value)
     },
 
+    resetDataForm() {
+      this.savedWorkOrder = true
+      this.resetRepairsTable()
+      this.correlative = 0
+      this.description = ''
+      this.dataForm = {}
+      this.resetStatus = true
+      
+    },
+
+    addWorkOrder() {
+      this.dataForm.description = this.description
+      
+      this.addWorkOrderClientExists(this.dataForm).then(() => {
+        this.resetDataForm()
+        this.clientExists = false
+        console.log('paso por addWorkOrderClientExists')
+        
+      })
+        .catch(error => {
+          console.log(error.response.data)
+          alert(error.response.data)
+        })
+    },
+
     newOrder() {
+      this.dataForm.description = this.description
       this.createWorkOrder(this.dataForm).then(() => {
-        this.savedWorkOrder = true
-        this.resetRepairsTable()
-        this.correlative = 0
+        this.resetDataForm()
       })
-      .catch(error => {
-        console.log(error.response.data)
-        alert(error.response.data)
-      })
+        .catch(error => {
+          console.log('paso por este error el cliente que no existe')
+          console.log(error.response.data)
+          alert(error.response.data)
+        })
     },
 
     setCorrelativeNumber() {
       this.getCorrelativeWorkOrder().then(data => {
         this.correlative = data.correlativeNumber
       })
+    },
+
+    onSendClientExists(clientExists) {
+      this.clientExists = clientExists
     }
+
 
   },
 
   computed: {
-    ...mapGetters('repair', (['getRepairs', 'getTotalOrder', 'getDataOrder'])),
+    ...mapGetters('repair', (['getRepairs', 'getTotalOrder', 'getDataOrder', 
+    'getClientByDni'])),
     ...mapState('repair', (['repairs', 'dataOrder'])),
 
     getRepairsData() {
@@ -129,18 +177,21 @@ export default {
     },
 
     completeInformation() {
-      if (this.repairs.length == 0 && Object.keys(this.dataOrder).length  == 0) return true
+      if (this.repairs.length == 0 || Object.keys(this.dataForm).length < 3) {
+        return true
+      } 
 
       return false
+    },
+
+    getWortkOrdersClient() {
+      return this.getClientByDni.workorders
     }
 
-
-  },
-
+  }
 }
 
 </script>
-
 
 <style lang="scss" scoped>
 .form-order {
@@ -155,5 +206,4 @@ export default {
   margin: 0;
   font-size: 0.8rem;
 }
-
 </style>

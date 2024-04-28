@@ -1,5 +1,5 @@
 <template>
-        <table class="table table-sm table-hover mb-3">
+        <table class="table table-hover mb-3">
             <thead class="table-warning">
                 <tr>
                     <th scope="col">Nº</th>
@@ -7,7 +7,7 @@
                     <th scope="col">Modelo</th>
                     <th scope="col">Reparación</th>
                     <th scope="col">Precio</th>
-                    <th scope="col"></th>
+                    <th scope="col">Eliminar</th>
                 </tr>
             </thead>
             <tbody>

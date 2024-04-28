@@ -3,7 +3,7 @@
     <section>
       <legend>Detalle de Reparaciones</legend>
       <hr>
-      <div class="d-flex gap-3">
+      <div class="d-flex justify-content-between gap-3">
         <SelectBrand class="form-select-sm" @selection="setBrand" :resetBrand="repair.idBrand" />
 
         <SelectModel class="form-select-sm" @selection-model="setModel" :brand="repair.idBrand" />
@@ -11,7 +11,7 @@
         <SelectTypeRepair @selection-type-repair="setTypeRepair" :resetType="repair.idTypeRepair"
           class="form-select-sm" />
 
-        <button @click.prevent="getRepair" class="btn btn-success">
+        <button @click.prevent="getRepair" class="btn btn-success" :disabled="onAllSelected">
           Agregar
         </button>
 
@@ -41,6 +41,7 @@ export default {
       },
       temporal: [],
       duplicated: [],
+      allSelected: false
     }
   },
 
@@ -85,6 +86,13 @@ export default {
   computed: {
     ...mapState('repair', (['repairs'])),
     ...mapGetters('setup', (['getTypesRepairs'])),
+
+    onAllSelected() {
+      if (this.repair.idBrand !== 0 && this.repair.idModel !== 0 && this.repair.idTypeRepair !== 0) {      
+      return  false
+      }
+      return true
+    }
 
   },
 

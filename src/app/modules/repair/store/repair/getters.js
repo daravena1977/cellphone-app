@@ -14,6 +14,10 @@ export const getDataOrder = (state) => {
     return state.dataOrder
 }
 
+export const getClientByDni = (state) => {
+    return state.clientByDni
+}
+
 /* export const changePrice = (state) => (index, value) => {
     return state.repairs.forEach((repair) => {
         if (repair.indexOf === index) {

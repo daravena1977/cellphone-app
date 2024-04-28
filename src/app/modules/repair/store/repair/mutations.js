@@ -30,3 +30,7 @@ export const resetRepairsTable = (state) => {
 export const resetDataOrder = (state) => {
     state.dataOrder = {}
 }
+
+export const setClientByDni = (state, data) => {
+    state.clientByDni = data
+}
