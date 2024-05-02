@@ -18,6 +18,10 @@ export const getClientByDni = (state) => {
     return state.clientByDni
 }
 
+export const getPendingClientOrder = (state) => {
+    return state.clientByDni.workorders.filter(order => order.stateOrder == 'PENDIENTE')
+}
+
 /* export const changePrice = (state) => (index, value) => {
     return state.repairs.forEach((repair) => {
         if (repair.indexOf === index) {

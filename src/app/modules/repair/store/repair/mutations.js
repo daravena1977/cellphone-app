@@ -34,3 +34,7 @@ export const resetDataOrder = (state) => {
 export const setClientByDni = (state, data) => {
     state.clientByDni = data
 }
+
+export const resetClientByDni = (state) => {
+    state.clientByDni = {}
+}

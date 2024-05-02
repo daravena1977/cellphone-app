@@ -1,22 +1,22 @@
 <template>
   <form class="form-control contenedor">
     <fieldset>
-      <legend>Orden de trabajo</legend>
+      <legend>{{ lengendProp }}</legend>
       <hr>
-      <div class="data input-group-sm">
+      <div v-if="showField" class="data input-group-sm">
         <label for="number">Nº</label>
         <input v-model="orderData.number" id="number" class="form-control" type="number" placeholder="Nº de Orden"
           disabled>
       </div>
 
-      <div class="data input-group-sm">
+      <div v-if="showField" class="data input-group-sm">
         <label for="date">Fecha</label>
         <input v-model="orderData.creationDate" id="date" class="form-control" type="date" name="fechaActual">
       </div>
 
       <div class="data input-group-sm">
         <label for="dni">DNI</label>
-        <input v-model="orderData.dni" id="dni" class="form-control" 
+        <input @keypress.enter="searchClientByDni(orderData.dni)" v-model="orderData.dni" id="dni" class="form-control" 
         @focusout="searchClientByDni(orderData.dni)" type="text" placeholder="Dni">
       </div>
 
@@ -51,13 +51,13 @@
         :disabled="idDisabled">
       </div>
 
-      <div class="data input-group-sm">
+      <div v-if="showField" class="data input-group-sm">
         <label for="dateDelivery">Fecha entrega</label>
         <input v-model="orderData.deliverDate" id="dateDelivery" class="form-control" type="date"
           placeholder="fecha entrega">
       </div>
 
-      <div class="data">
+      <div v-if="showField" class="data">
         <label for="state">Estado</label>
         <select id="state" @change="setStatus"
         class="form-select form-select-sm">
@@ -103,7 +103,7 @@ export default {
         'PENDIENTE',
         'SIN_SOLUCION',
         'ANULADA'],
-      idDisabled: false,
+      idDisabled: this.isDisabledProp,
       clientExists: false,
       savedOrder: false,
       actualDate: new Date(),
@@ -126,6 +126,20 @@ export default {
       default: false,
       required: true,
     },
+    showField: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+    isDisabledProp: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    lengendProp: {
+      type: String,
+      default: 'Orden de trabajo'
+    }
   },
 
   watch: {
@@ -140,11 +154,16 @@ export default {
         this.idDisabled = false
         
         
-      }
+      }      
     },
     correlative(value) {
       this.orderData.number = value
-    }
+    },
+    /* isDisabledProp(value) {
+        if (value) {
+          this.idDisabled = true
+        }
+      } */
   },  
 
   methods: {
@@ -207,6 +226,7 @@ export default {
     this.orderData.creationDate = moment(this.actualDate).format('YYYY-MM-DD')
 
   },
+  
 
 
 

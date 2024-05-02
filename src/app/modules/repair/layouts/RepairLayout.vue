@@ -17,6 +17,8 @@ export default {
       return {
         optionsSideBar: [
           { to: 'workorder', name: 'Nueva Orden Trabajo' },
+          { to: 'client', name: 'Consultar Cliente' },
+          { to: 'search-order', name: 'Consultar Orden'}
         ]
       }
     }   

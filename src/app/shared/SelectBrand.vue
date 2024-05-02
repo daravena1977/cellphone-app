@@ -29,15 +29,11 @@ export default {
 
   computed: {
     ...mapGetters('setup', (['getBrands'])),
-    brands() {
-      
-      return this.getBrands
-      
+
+    brands() {      
+      return this.getBrands      
     }
-
-  },
-
-  
+  },  
 }
 </script>
 

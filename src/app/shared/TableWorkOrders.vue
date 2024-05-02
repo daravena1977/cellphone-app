@@ -12,10 +12,15 @@
     <tbody class="table-group-divider">
         <tr v-for="({ number, creationDate, deliverDate, stateOrder }, index) in workOrders" :key="index">
             <th scope="row">{{ number }}</th>
-            <td>{{ creationDate }}</td>
-            <td>{{ deliverDate }}</td>
+            <td>{{ formatDate(creationDate) }}</td>
+            <td>{{ formatDate(deliverDate) }}</td>
             <td>{{ stateOrder }}</td>
-            <td></td>
+            <td>
+                <button class="btn">
+                    <i class="fa-solid fa-eye" style="color: #058c42;"></i>
+                    
+                </button>
+            </td>
         </tr>
     </tbody>
 
@@ -23,6 +28,8 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
 name: 'TableWorkOrders',
 
@@ -33,6 +40,12 @@ name: 'TableWorkOrders',
             default: () => []
         }
     },
+
+    methods: {
+        formatDate(date) {
+            return moment(date).format('DD-MM-YYYY')
+        }
+    }
 
 }
 </script>
