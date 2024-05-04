@@ -1,33 +1,23 @@
 <template>
-  <div class="container-fluid">
-      
-  <router-view/>
-  </div>
-  
+  <v-app>
+    <v-main>
+      <HelloWorld/>
+    </v-main>
+  </v-app>
 </template>
 
-<style lang="scss" scoped>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+<script>
+import HelloWorld from './components/HelloWorld.vue'
 
-nav {
-  padding: 20px;
-}
+export default {
+  name: 'App',
 
-nav a {
-  font-weight: bold;
-  color: white;
-}
+  components: {
+    HelloWorld,
+  },
 
-nav a.router-link-exact-active {
-  color: #42b983;
+  data: () => ({
+    //
+  }),
 }
-
-span {
-  color: #42b983;
-}
-</style>
+</script>
