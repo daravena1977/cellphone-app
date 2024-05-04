@@ -19,7 +19,11 @@ export const getClientByDni = (state) => {
 }
 
 export const getPendingClientOrder = (state) => {
-    return state.clientByDni.workorders.filter(order => order.stateOrder == 'PENDIENTE')
+    if (Object.keys(state.clientByDni).length > 0) {
+        return state.clientByDni.workorders
+            .filter(order => order.stateOrder == 'PENDIENTE')
+    }
+    return
 }
 
 /* export const changePrice = (state) => (index, value) => {
