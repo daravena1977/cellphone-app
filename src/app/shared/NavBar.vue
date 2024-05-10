@@ -60,10 +60,10 @@ nav a {
 }
 
 nav a.router-link-active {
-  color: #42b983;
+  color: #e74c3c;
 }
 
 span {
-  color: #42b983;
+  color: #e74c3c;
 }
 </style>

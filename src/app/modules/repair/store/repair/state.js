@@ -2,5 +2,7 @@ export default () => ({
     repairs: [],
     dataOrder: {},
     correlativeWorKOrder: 0,
-    clientByDni: {}
+    clientByDni: {},
+    workOrdersByNumber: [],
+    workOrdersByDate: []
 })

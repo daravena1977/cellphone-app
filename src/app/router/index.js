@@ -22,7 +22,7 @@ const routes = [
   },
   {
     path: '/repair-module',
-    ...repairRouter
+    ...repairRouter,
   }
 ]
 

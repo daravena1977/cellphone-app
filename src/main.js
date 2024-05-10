@@ -6,6 +6,7 @@ import moment from 'moment'
 
 
 import 'bootstrap/dist/js/bootstrap.bundle'
+
 import './styles/styles.scss'
 
 import setupInterceptors from '@/app/services/setupinterceptors'

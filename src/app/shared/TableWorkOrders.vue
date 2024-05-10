@@ -1,6 +1,7 @@
 <template>
-  <table class="table table-sm table-hover">
-    <thead class="table-warning">
+  <table class="table table-sm table-hover table-bordered caption-top">
+    <caption>Listado de ordenes de trabajo</caption>
+    <thead class="table-info">
       <tr>
         <th scope="col">Nº</th>
         <th scope="col">Fecha</th>
@@ -22,7 +23,7 @@
         <td>{{ stateOrder }}</td>
         <td>
           <button class="btn">
-            <i class="fa-solid fa-eye" style="color: #058c42"></i>
+            <i class="fa-solid fa-eye" style="color: #e74c3c"></i>
           </button>
         </td>
       </tr>
@@ -62,5 +63,9 @@ th {
 
 table {
   transform: scale(0.85);
+}
+
+thead {
+  background: #3498db;
 }
 </style>

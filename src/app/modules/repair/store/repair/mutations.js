@@ -38,3 +38,16 @@ export const setClientByDni = (state, data) => {
 export const resetClientByDni = (state) => {
     state.clientByDni = {}
 }
+
+export const setWorkOrdersByNumber = (state, data) => {
+    state.workOrdersByNumber = data
+}
+
+export const setWorkOrdersByDate = (state, data) => {
+    state.workOrdersByDate = data
+}
+
+export const resetDataTableSearchOrders = (state) => {
+    state.workOrdersByDate = []
+    state.workOrdersByNumber = []
+}

@@ -231,6 +231,14 @@ export default {
       return this.getClientByDni.workorders
     },
   },
+
+  activated() {
+    console.log('activated')
+  },
+
+  deactivated() {
+    console.log('deactivated')
+  }
 }
 </script>
 

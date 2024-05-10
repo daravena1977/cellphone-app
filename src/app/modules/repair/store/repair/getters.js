@@ -26,6 +26,14 @@ export const getPendingClientOrder = (state) => {
     return
 }
 
+export const getTableWorkOrdersByNumber = (state) => {
+    return state.workOrdersByNumber
+}
+
+export const getTableWorkOrdersByDate = (state) => {
+    return state.workOrdersByDate
+}
+
 /* export const changePrice = (state) => (index, value) => {
     return state.repairs.forEach((repair) => {
         if (repair.indexOf === index) {
