@@ -5,7 +5,11 @@
         v-for="(button, index) in buttons"
         :key="index"
         :class="{ active: activeButton === index }"
-        @click="resetDataTable(); setActive(index); handleClick(index)"
+        @click="
+          resetDataTable();
+          setActive(index);
+          handleClick(index)
+        "
         class="btn btn-bar"
       >
         {{ button }}
@@ -81,8 +85,21 @@
     </div>
 
     <!-- Search By State -->
-    <div v-if="showOptionForState">
-      <h2>por estado</h2>
+    <div v-if="showOptionForState" class="d-flex w-50 gap-1">
+      <label class="w-25" for="state">Seleccione estado</label>
+      <select @change="getWorkOrdersByState" id="state" class="form-select form-select-sm w-25">
+        <option selected>Seleccione estado</option>
+        <option
+          v-for="(status, index) in statusOrders"
+          :key="index"
+          :value="status"
+        >
+          {{ status }}
+        </option>
+      </select>
+    </div>
+    <div>
+      <TableWorkOrders v-if="showTable && getTableWorkOrdersByState.length > 0" class="w-75 m-0" :workOrders="getTableWorkOrdersByState"/>  
     </div>
   </div>
 </template>
@@ -117,11 +134,12 @@ export default {
         startDate: '',
         endDate: '',
       },
+      statusOrders: ['ENTREGADO', 'PENDIENTE', 'SIN_SOLUCION', 'ANULADA'],
     }
   },
 
   methods: {
-    ...mapActions('repair', ['findWorkOrdersByNumber', 'findWorkOrdersByDate']),
+    ...mapActions('repair', ['findWorkOrdersByNumber', 'findWorkOrdersByDate', 'findWorkOrdersByState']),
     ...mapMutations('repair', ['resetDataTableSearchOrders']),
 
     getWorkOrdersByNumber(numberOrder) {
@@ -137,6 +155,13 @@ export default {
       this.paramsDate.endDate = endDate
 
       this.findWorkOrdersByDate(this.paramsDate).then((data) => {
+        this.showTable = true
+        this.workOrdersSearched = data
+      })
+    },
+
+    getWorkOrdersByState($event) {
+      this.findWorkOrdersByState($event.target.value).then((data) => {
         this.showTable = true
         this.workOrdersSearched = data
       })
@@ -185,10 +210,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters('repair', ['getTableWorkOrdersByNumber', 'getTableWorkOrdersByDate'])
-
-
-  }
+    ...mapGetters('repair', [
+      'getTableWorkOrdersByNumber',
+      'getTableWorkOrdersByDate',
+      'getTableWorkOrdersByState'
+    ]),
+  },
 }
 </script>
 

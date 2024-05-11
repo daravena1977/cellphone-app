@@ -78,9 +78,6 @@ export const findWorkOrdersByNumber = async ({ commit }, numberOrder) => {
 export const findWorkOrdersByDate = async ({ commit }, paramsDate) => {
     
     const { startDate, endDate } = paramsDate
-
-    console.log(startDate)
-    console.log(endDate)
     
     const { data } = await cellPhoneApi.get('/workorders/find-by-date', 
     {
@@ -92,9 +89,20 @@ export const findWorkOrdersByDate = async ({ commit }, paramsDate) => {
 
     commit('setWorkOrdersByDate', data)
 
-    console.log(data)
     return data
 }
 
+export const findWorkOrdersByState = async ({ commit }, stateOrder ) => {
+    const { data } = await cellPhoneApi.get('/workorders/find-by-state', 
+        {
+            params: {
+                stateOrder
+            }
+        })
+
+    commit('setWorkOrdersByState', data)
+
+    return data
+}
 
 

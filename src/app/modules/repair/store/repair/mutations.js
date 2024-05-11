@@ -47,7 +47,12 @@ export const setWorkOrdersByDate = (state, data) => {
     state.workOrdersByDate = data
 }
 
+export const setWorkOrdersByState = (state, data) => {
+    state.workOrdersByState = data
+}
+
 export const resetDataTableSearchOrders = (state) => {
     state.workOrdersByDate = []
     state.workOrdersByNumber = []
+    state.workOrdersByState = []
 }

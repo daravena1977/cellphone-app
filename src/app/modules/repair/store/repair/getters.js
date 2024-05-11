@@ -34,6 +34,10 @@ export const getTableWorkOrdersByDate = (state) => {
     return state.workOrdersByDate
 }
 
+export const getTableWorkOrdersByState = (state) => {
+    return state.workOrdersByState
+}
+
 /* export const changePrice = (state) => (index, value) => {
     return state.repairs.forEach((repair) => {
         if (repair.indexOf === index) {

@@ -4,5 +4,6 @@ export default () => ({
     correlativeWorKOrder: 0,
     clientByDni: {},
     workOrdersByNumber: [],
-    workOrdersByDate: []
+    workOrdersByDate: [],
+    workOrdersByState: []
 })
