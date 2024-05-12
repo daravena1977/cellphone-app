@@ -1,6 +1,6 @@
 <template>
         <table class="table table-hover mb-3">
-            <thead class="table-warning">
+            <thead class="table-info">
                 <tr>
                     <th scope="col">Nº</th>
                     <th scope="col">Marca</th>

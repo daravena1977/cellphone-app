@@ -11,20 +11,17 @@
       </tr>
     </thead>
     <tbody class="table-group-divider">
-      <tr
-        v-for="(
+      <tr v-for="(
           { number, creationDate, deliverDate, stateOrder }, index
-        ) in workOrders"
-        :key="index"
-      >
+        ) in workOrders" :key="index">
         <th scope="row">{{ number }}</th>
         <td>{{ formatDate(creationDate) }}</td>
         <td>{{ formatDate(deliverDate) }}</td>
         <td>{{ stateOrder }}</td>
         <td>
-          <button class="btn">
+          <button @click.prevent="openModal" class="btn">
             <i class="fa-solid fa-eye" style="color: #e74c3c"></i>
-          </button>
+          </button>          
         </td>
       </tr>
     </tbody>
@@ -36,6 +33,12 @@ import moment from 'moment'
 
 export default {
   name: 'TableWorkOrders',
+
+  data() {
+    return {
+      show: true,
+    }
+  },
 
   props: {
     workOrders: {
@@ -49,6 +52,11 @@ export default {
     formatDate(date) {
       return moment(date).format('DD-MM-YYYY')
     },
+
+    openModal() {
+      console.log('paso por modal')
+      this.$emit('openModalWorkOrder')
+    }
   },
 }
 </script>

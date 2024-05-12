@@ -2,38 +2,24 @@
   <div class="row">
     <form></form>
     <div class="col col-lg-5">
-      <PersonalData
-        @send-dni="validateDni"
-        @sendClientExists="setClientExists"
-        :isDisabledProp="isDisabled"
-        :showField="showField"
-        :lengendProp="title"
-        :resetFormFromClientView="resetClientDataForm"
-        :focusInputDni="resetDniData"
-      />
+      <PersonalData @send-dni="validateDni" @sendClientExists="setClientExists" :isDisabledProp="isDisabled"
+        :showField="showField" :lengendProp="title" :resetFormFromClientView="resetClientDataForm"
+        :focusInputDni="resetDniData" />
 
       <div class="d-flex gap-2">
-        <button
-          @click="
-            showTable = true; 
+        <button @click="
+            showTable = true;
             showPendingOrders = false;
             tableTitle = 'Historial de ordenes de trabajo'
-          "
-          class="btn btn-primary w-25 mt-3"
-          :disabled="Object.keys(getClientByDni).length == 0"
-        >
+          " class="btn btn-primary w-25 mt-3" :disabled="Object.keys(getClientByDni).length == 0">
           Historial
         </button>
 
-        <button
-          @click="
+        <button @click="
             showTable = true;
             showPendingOrders = true;
             tableTitle = 'Ordenes de trabajo pendientes'
-          "
-          class="btn btn-success w-25 mt-3"
-          :disabled="Object.keys(getClientByDni).length == 0"
-        >
+          " class="btn btn-success w-25 mt-3" :disabled="Object.keys(getClientByDni).length == 0">
           Pendientes
         </button>
       </div>
@@ -43,19 +29,39 @@
       <form class="form-control" v-if="showTable && showPendingOrders == false">
         <legend>{{ tableTitle }}</legend>
         <hr />
-        <TableWorkOrders :workOrders="getClientFound" />
+        <TableWorkOrders @openModalWorkOrder="setShowModal" :workOrders="getClientFound" />
       </form>
 
       <form class="form-control" v-if="showTable && showPendingOrders">
         <legend>{{ tableTitle }}</legend>
         <hr />
-        <TableWorkOrders :workOrders="getPendingOrders" />
+        <TableWorkOrders @openModalWorkOrder="setShowModal" :workOrders="getPendingOrders" />
       </form>
+      <!-- Modal WorkOrder -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5>Orden de trabajo</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <WorkOrder />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import bootstrapBundle from 'bootstrap/dist/js/bootstrap.bundle'
 import { defineAsyncComponent } from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
 
@@ -69,6 +75,7 @@ export default {
     TableWorkOrders: defineAsyncComponent(() =>
       import('@/app/shared/TableWorkOrders')
     ),
+    WorkOrder: defineAsyncComponent(() => import('@/app/shared/WorkOrder')),
   },
 
   data() {
@@ -83,6 +90,7 @@ export default {
       clientExists: false,
       resetDniData: false,
       title: 'Buscar Cliente',
+      showModal: false,
     }
   },
 
@@ -111,7 +119,16 @@ export default {
       if (!clientExists) {
         this.resetDniData = true
       }
-    }
+    },
+
+    setShowModal() {
+      let modal = new bootstrapBundle.Modal(document.getElementById('myModal'))
+      modal.show()
+    },
+
+    closeModal() {
+      this.showModal = false
+    },
   },
 
   computed: {
@@ -136,8 +153,8 @@ export default {
 
   deactivated() {
     console.log('deactivated')
-  }
- }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
