@@ -1,6 +1,8 @@
 <template>
   <table class="table table-sm table-hover table-bordered caption-top">
-    <caption>Listado de ordenes de trabajo</caption>
+    <caption>
+      Listado de ordenes de trabajo
+    </caption>
     <thead class="table-info">
       <tr>
         <th scope="col">Nº</th>
@@ -11,17 +13,45 @@
       </tr>
     </thead>
     <tbody class="table-group-divider">
-      <tr v-for="(
-          { number, creationDate, deliverDate, stateOrder }, index
-        ) in workOrders" :key="index">
+      <tr
+        v-for="(
+          {
+            id,
+            number,
+            creationDate,
+            deliverDate,
+            description,
+            stateOrder,
+            workorderRepairCellphones,
+            idClient,
+          },
+          index
+        ) in workOrders"
+        :key="index"
+      >
         <th scope="row">{{ number }}</th>
         <td>{{ formatDate(creationDate) }}</td>
         <td>{{ formatDate(deliverDate) }}</td>
         <td>{{ stateOrder }}</td>
         <td>
-          <button @click.prevent="openModal" class="btn">
+          <button
+            @click.prevent="
+              openModal();
+              setDataOrder({
+                id,
+                number,
+                creationDate,
+                deliverDate,
+                description,
+                stateOrder,
+                workorderRepairCellphones,
+                idClient,
+              })
+            "
+            class="btn"
+          >
             <i class="fa-solid fa-eye" style="color: #e74c3c"></i>
-          </button>          
+          </button>
         </td>
       </tr>
     </tbody>
@@ -56,7 +86,12 @@ export default {
     openModal() {
       console.log('paso por modal')
       this.$emit('openModalWorkOrder')
-    }
+    },
+
+    setDataOrder(data) {
+      console.log(data)
+      this.$emit('sendDataWorkOrdersRepairs', data)
+    },
   },
 }
 </script>
@@ -73,7 +108,4 @@ table {
   transform: scale(0.85);
 }
 
-thead {
-  background: #3498db;
-}
 </style>

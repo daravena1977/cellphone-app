@@ -1,21 +1,242 @@
 <template>
   <form>
     <fieldset>
-        <legend>Datos personales</legend>
-        <label for="form-label">Nº de Orden</label>
-        <input type="number">
-    </fieldset>
+      <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="basic-addon1">Nº</span>
+        <input
+          v-model="dataOrder.number"
+          type="number"
+          class="form-control"
+          placeholder="Nº de orden"
+          aria-label="Nº de orden"
+          aria-describedby="basic-addon1"
+        />
+        <span class="input-group-text" id="basic-addon3">Fecha ingreso</span>
+        <input
+          v-model="dataOrder.creationDate"
+          type="date"
+          class="form-control"
+          placeholder="Fecha ingreso"
+          aria-label="Fecha"
+          aria-describedby="basic-addon3"
+        />
+        <span class="input-group-text" id="basic-addon4">Fecha entrega</span>
+        <input
+          v-model="dataOrder.deliverDate"
+          type="date"
+          class="form-control"
+          placeholder="Fecha entrega"
+          aria-label="Fecha"
+          aria-describedby="basic-addon4"
+        />
+        <span class="input-group-text" id="basic-addon11">Estado</span>
+        <input
+          v-model="dataOrder.stateOrder"
+          type="text"
+          class="form-control"
+          placeholder="Estado orden"
+          aria-label="Estado"
+          aria-describedby="basic-addon11"
+        />
+      </div>
 
+      <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="basic-addon2">DNI</span>
+        <input
+          v-model="getClientByDni.dni"
+          type="text"
+          class="form-control"
+          placeholder="DNI del cliente"
+          aria-label="dni"
+          aria-describedby="basic-addon2"
+        />
+        <span class="input-group-text" id="basic-addon5">Nombre</span>
+        <input
+          v-model="getClientByDni.firstName"
+          type="text"
+          class="form-control"
+          placeholder="Nombre del cliente"
+          aria-label="Nombre"
+          aria-describedby="basic-addon5"
+        />
+        <span class="input-group-text" id="basic-addon6">Apellido</span>
+        <input
+          v-model="getClientByDni.lastName"
+          type="text"
+          class="form-control"
+          placeholder="Apellido del cliente"
+          aria-label="Apellido"
+          aria-describedby="basic-addon6"
+        />
+      </div>
+      <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="basic-addon7"
+          ><i class="fa-solid fa-at"></i
+        ></span>
+        <input
+          v-model="getClientByDni.email"
+          type="email"
+          class="form-control"
+          placeholder="Email"
+          aria-label="email"
+          aria-describedby="basic-addon7"
+        />
+        <span class="input-group-text" id="basic-addon8"
+          ><i class="fa-solid fa-phone-volume"></i
+        ></span>
+        <input
+          v-model="getClientByDni.phoneNumber"
+          type="tel"
+          class="form-control"
+          placeholder="Teléfono"
+          aria-label="telefono"
+          aria-describedby="basic-addon8"
+        />
+      </div>
+      <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="basic-addon9">Dirección</span>
+        <input
+          v-model="getClientByDni.address"
+          type="text"
+          class="form-control"
+          placeholder="Dirección del cliente"
+          aria-label="Direccion"
+          aria-describedby="basic-addon9"
+        />
+      </div>
+      <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="basic-addon10">Comentarios</span>
+        <textarea
+          v-model="dataOrder.description"
+          class="form-control"
+          aria-label="With textarea"
+        ></textarea>
+      </div>
+
+      <hr />
+
+      <div class="input-group input-group-sm">
+        <table class="table table-bordered table-hover">
+          <caption>
+            Listado de reparaciones
+          </caption>
+          <thead class="table-info">
+            <tr>
+              <th scope="col">Nº</th>
+              <th scope="col">Marca</th>
+              <th scope="col">Modelo</th>
+              <th scope="col">Reparación</th>
+              <th scope="col">Precio</th>
+              <th scope="col" v-if="editingMode">Editar/Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(
+                { brand, model, typeRepair, payment}, index
+              ) in dataOrder.workorderRepairCellphones"
+              :key="index"
+            >
+              <th scope="row">{{ index + 1 }}</th>
+              <td>{{ brand }}</td>
+              <td>{{ model }}</td>
+              <td>{{ typeRepair }}</td>
+              <td                 
+              >
+              {{ payment }}
+                <input v-if="editingMode" type="text" ref="inputPayment"  v-model="paymentEdit" >
+              </td>
+              <td v-if="editingMode">
+                <button
+                  @click.prevent="editPayment(index)"
+                  class="btn"
+                >
+                <i class="fa-regular fa-pen-to-square"></i>
+                </button>
+                <button
+                  @click.prevent="$emit('delete-repair', index)"
+                  class="btn"
+                >
+                  <i class="fa-solid fa-trash" style="color: #df1530"></i>
+                </button>
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
   </form>
 </template>
 
 <script>
-export default {
-    name: 'WorkOrder'
+import { mapGetters } from 'vuex'
 
+export default {
+  name: 'WorkOrder',
+
+  data() {
+    return {
+      dataOrder: {},
+      paymentEdit: ''
+    }
+  },
+
+  props: {
+    dataWorkOrder: {
+      type: Object,
+      default: () => {},
+    },
+
+    editingMode: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  watch: {
+    dataWorkOrder(value) {
+      if (value) {
+        this.dataOrder = value
+        console.log(typeof this.dataOrder.workorderRepairCellphones)
+      }
+    },
+  },
+
+  methods: {
+    editPayment(index) {
+
+
+          this.$refs.inputPayment[index].select()
+
+
+      
+    }
+  },
+
+  computed: {
+    ...mapGetters('repair', ['getClientByDni']),
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+td,
+th {
+  vertical-align: middle;
+  text-align: center;
+  font-size: small;
+}
 
+td {
+  padding: 0px;
+}
+
+table {
+  margin: auto;
+  transform: scale(0.9);
+}
+
+/* table {
+} */
 </style>

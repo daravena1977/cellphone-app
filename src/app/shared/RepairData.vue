@@ -65,7 +65,7 @@ export default {
     getRepair() {     
       
       this.loadRepairCellphone(this.repair).then(() => {
-        
+          /* Esto es para eliminar los registros repetidos y no permitir ingresar otro igual */
           const arrayCompare = new Set()
           this.repairs.forEach((repair) => arrayCompare.add(JSON.stringify(repair) ))
 

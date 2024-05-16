@@ -4,9 +4,7 @@ export const getRepairs = (state) => {
 
 export const getTotalOrder = (state) => {
     let total = 0
-
     state.repairs.forEach((repair) => total += repair.price)
-
     return total
 }
 
@@ -25,6 +23,8 @@ export const getPendingClientOrder = (state) => {
     }
     return
 }
+
+/* Modulo de consultas */
 
 export const getTableWorkOrdersByNumber = (state) => {
     return state.workOrdersByNumber

@@ -29,26 +29,29 @@
       <form class="form-control" v-if="showTable && showPendingOrders == false">
         <legend>{{ tableTitle }}</legend>
         <hr />
-        <TableWorkOrders @openModalWorkOrder="setShowModal" :workOrders="getClientFound" />
+        <TableWorkOrders @sendDataWorkOrdersRepairs="setDataWorkOrder" @openModalWorkOrder="setShowModal" :workOrders="getClientFound" />
       </form>
 
       <form class="form-control" v-if="showTable && showPendingOrders">
         <legend>{{ tableTitle }}</legend>
         <hr />
-        <TableWorkOrders @openModalWorkOrder="setShowModal" :workOrders="getPendingOrders" />
+        <TableWorkOrders @sendDataWorkOrdersRepairs="setDataWorkOrder" @openModalWorkOrder="setShowModal" :workOrders="getPendingOrders" />
       </form>
       <!-- Modal WorkOrder -->
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h5>Orden de trabajo</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <WorkOrder />
+              <WorkOrder :editingMode="editingMode" :dataWorkOrder="dataWorkOrder" />
             </div>
             <div class="modal-footer">
+              <button v-if="!editingMode" @click="editingMode = true" type="button" class="btn btn-primary">
+                Editar
+              </button>
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Cerrar
               </button>
@@ -91,6 +94,8 @@ export default {
       resetDniData: false,
       title: 'Buscar Cliente',
       showModal: false,
+      dataWorkOrder: {},
+      editingMode: false
     }
   },
 
@@ -129,6 +134,10 @@ export default {
     closeModal() {
       this.showModal = false
     },
+
+    setDataWorkOrder(data) {
+      this.dataWorkOrder = data
+    }
   },
 
   computed: {

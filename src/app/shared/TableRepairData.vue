@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 <tr v-for=" ({ cellphone, repair, price }, index) in repairsData" 
-                :key="repair.id">
+                :key="index">
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ cellphone.brand }}</td>
                     <td>{{ cellphone.model }}</td>
