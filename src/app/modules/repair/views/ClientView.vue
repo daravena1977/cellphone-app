@@ -95,7 +95,8 @@ export default {
       title: 'Buscar Cliente',
       showModal: false,
       dataWorkOrder: {},
-      editingMode: false
+      editingMode: false,
+      modalWorkOrder: {}
     }
   },
 
@@ -128,6 +129,7 @@ export default {
 
     setShowModal() {
       let modal = new bootstrapBundle.Modal(document.getElementById('myModal'))
+      this.modalWorkOrder = modal
       modal.show()
     },
 
@@ -137,7 +139,8 @@ export default {
 
     setDataWorkOrder(data) {
       this.dataWorkOrder = data
-    }
+    },
+
   },
 
   computed: {
