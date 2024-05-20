@@ -31,8 +31,9 @@
           aria-label="Fecha"
           aria-describedby="basic-addon4"
         />
-        <span class="input-group-text" id="basic-addon11">Estado</span>
+        <span v-if="editingMode === false" class="input-group-text" id="basic-addon11">Estado</span>
         <input
+          v-if="editingMode === false"
           v-model="dataOrder.stateOrder"
           type="text"
           class="form-control"
@@ -40,6 +41,7 @@
           aria-label="Estado"
           aria-describedby="basic-addon11"
         />
+        <SelectState v-if="editingMode" :stateOrderRecievedProp="dataOrder.stateOrder" />
       </div>
 
       <div class="input-group input-group-sm mb-3">
@@ -61,6 +63,7 @@
           placeholder="Nombre del cliente"
           aria-label="Nombre"
           aria-describedby="basic-addon5"
+          disabled
         />
         <span class="input-group-text" id="basic-addon6">Apellido</span>
         <input
@@ -203,7 +206,8 @@ export default {
   name: 'WorkOrder',
 
   components: {
-    InputToVFor: defineAsyncComponent(() => import('@/app/shared/InputToVFor'))
+    InputToVFor: defineAsyncComponent(() => import('@/app/shared/InputToVFor')),
+    SelectState: defineAsyncComponent(() => import('@/app/shared/SelectState'))
   },
 
   data() {
@@ -223,6 +227,11 @@ export default {
     },
 
     editingMode: {
+      type: Boolean,
+      default: false
+    },
+
+    saveMode: {
       type: Boolean,
       default: false
     }
