@@ -56,3 +56,7 @@ export const resetDataTableSearchOrders = (state) => {
     state.workOrdersByNumber = []
     state.workOrdersByState = []
 }
+
+export const updateWorkOrders = (state, newWorkOrders) => {
+    state.workOrderUpdate.workorderRepairCellphones = [...newWorkOrders]
+}

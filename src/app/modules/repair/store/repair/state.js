@@ -5,5 +5,12 @@ export default () => ({
     clientByDni: {},
     workOrdersByNumber: [],
     workOrdersByDate: [],
-    workOrdersByState: []
+    workOrdersByState: [],
+    workOrderUpdate: {
+        id: 0,
+        deliverDate: '',
+        description: '',
+        stateOrder: '',
+        workorderRepairCellphones: []
+    }
 })

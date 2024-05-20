@@ -49,11 +49,14 @@
               <WorkOrder :editingMode="editingMode" :dataWorkOrder="dataWorkOrder" />
             </div>
             <div class="modal-footer">
-              <button v-if="!editingMode" @click="editingMode = true" type="button" class="btn btn-primary">
+              <button v-if="!editingMode" @click="editingMode = true; showButtonSave = true" type="button" class="btn btn-primary">
                 Editar
               </button>
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Cerrar
+              </button>
+              <button v-if="showButtonSave" type="button" class="btn btn-danger">
+                Guardar
               </button>
             </div>
           </div>
@@ -96,7 +99,8 @@ export default {
       showModal: false,
       dataWorkOrder: {},
       editingMode: false,
-      modalWorkOrder: {}
+      modalWorkOrder: {},
+      showButtonSave: false
     }
   },
 
@@ -147,11 +151,11 @@ export default {
     ...mapGetters('repair', ['getClientByDni', 'getPendingClientOrder']),
 
     getClientFound() {
-      return this.getClientByDni.workorders
+      return JSON.parse(JSON.stringify(this.getClientByDni.workorders)) 
     },
 
     getPendingOrders() {
-      return this.getPendingClientOrder
+      return  JSON.parse(JSON.stringify(this.getPendingClientOrder)) 
     },
   },
 

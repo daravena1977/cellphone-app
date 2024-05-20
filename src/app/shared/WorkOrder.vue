@@ -140,7 +140,7 @@
           <tbody>
             <tr
               v-for="(
-                { brand, model, typeRepair, payment}, index
+                { id, brand, model, typeRepair, payment}, index
               ) in dataOrder.workorderRepairCellphones"
               :key="index"
             >
@@ -161,7 +161,7 @@
                 >
                 <i class="fa-regular fa-pen-to-square"></i>
                 </button>
-                <button class="btn save-button">
+                <button @click.prevent="setNewPayment(index, id)" class="btn save-button">
                   <i class="fa-solid fa-floppy-disk"></i>
                 </button>
                 <button
@@ -196,7 +196,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { defineAsyncComponent } from 'vue'
 
 export default {
@@ -232,7 +232,7 @@ export default {
     dataWorkOrder(value) {
       if (value) {
         this.dataOrder = value
-        this.totalOrder = this.getTotalOrderClientByDni()
+        this.getTotalOrderClientByDni()
         console.log(typeof this.dataOrder.workorderRepairCellphones)
       }
     },
@@ -249,6 +249,8 @@ export default {
   },
 
   methods: {
+  ...mapMutations('repair', ['updateWorkOrders']),
+
     updateItem(id, newValue) {
       const index = this.dataOrder.workorderRepairCellphones
         .findIndex((item) => item.id === id)
@@ -292,11 +294,36 @@ export default {
 
     getTotalOrderClientByDni() {
       let total = 0
-      this.dataOrder.workorderRepairCellphones.forEach(repair => total+= repair.payment)
+      this.dataOrder.workorderRepairCellphones
+        .forEach(repair => total+= repair.payment)
 
-      return total
+      this.totalOrder = total
+    },
+
+    setNewPayment(index, id) {
+      const inputPayment = document
+        .querySelector(`tr:nth-child(${ index + 1 }) .myInputPayment`)
+
+      const buttonSave = document
+        .querySelector(`tr:nth-child(${ index+ 1 }) .save-button`)
+        
+      buttonSave.style.display = 'none'
+
+      const buttonEdit = document
+        .querySelector(`tr:nth-child(${ index + 1 }) .edit-button`)
+
+      buttonEdit.style.display = 'inline-block'
+
+      inputPayment.setAttribute('disabled', 'true')
+
+      this.dataOrder.workorderRepairCellphones.forEach(order => {
+        if (order.id === id) {
+          order.payment = parseInt(inputPayment.value)
+        }
+      })
+
+      this.getTotalOrderClientByDni()
     }
-
   },
 
   computed: {
