@@ -84,12 +84,10 @@ export default {
     },
 
     openModal() {
-      console.log('paso por modal')
       this.$emit('openModalWorkOrder')
     },
 
     setDataOrder(data) {
-      console.log(data)
       this.$emit('sendDataWorkOrdersRepairs', data)
     },
   },

@@ -24,12 +24,14 @@
         />
         <span class="input-group-text" id="basic-addon4">Fecha entrega</span>
         <input
+          @change="$emit('updateDeliverDate', $event)"
           v-model="dataOrder.deliverDate"
           type="date"
           class="form-control"
           placeholder="Fecha entrega"
           aria-label="Fecha"
           aria-describedby="basic-addon4"
+          :disabled="!editingMode"
         />
         <span v-if="editingMode === false" class="input-group-text" id="basic-addon11">Estado</span>
         <input
@@ -40,8 +42,9 @@
           placeholder="Estado orden"
           aria-label="Estado"
           aria-describedby="basic-addon11"
+          :disabled="isDisabled"
         />
-        <SelectState v-if="editingMode" :stateOrderRecievedProp="dataOrder.stateOrder" />
+        <SelectState @setStatus="updateState" v-if="editingMode" :stateOrderRecievedProp="dataOrder.stateOrder" />
       </div>
 
       <div class="input-group input-group-sm mb-3">
@@ -117,9 +120,11 @@
       <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="basic-addon10">Comentarios</span>
         <textarea
+          @input="$emit('updateDescription', $event)"
           v-model="dataOrder.description"
           class="form-control"
           aria-label="With textarea"
+          :disabled="!editingMode"
         ></textarea>
       </div>
 
@@ -199,7 +204,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { defineAsyncComponent } from 'vue'
 
 export default {
@@ -234,6 +239,11 @@ export default {
     saveMode: {
       type: Boolean,
       default: false
+    },
+
+    saveData: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -242,22 +252,26 @@ export default {
       if (value) {
         this.dataOrder = value
         this.getTotalOrderClientByDni()
-        console.log(typeof this.dataOrder.workorderRepairCellphones)
       }
     },
 
     editingMode(value) {
-      console.log('paso por editing mode')
       if (value) {
         this.$nextTick(() => {
           this.setButtonSave()
-
         })
+      }
+    },
+
+    saveData(value) {
+      if (value) {
+        this.onSaveData()
       }
     }
   },
 
   methods: {
+  ...mapActions('repair', ['updateWorkOrder', 'loadClientByDni']),
   ...mapMutations('repair', ['updateWorkOrders']),
 
     updateItem(id, newValue) {
@@ -314,7 +328,7 @@ export default {
         .querySelector(`tr:nth-child(${ index + 1 }) .myInputPayment`)
 
       const buttonSave = document
-        .querySelector(`tr:nth-child(${ index+ 1 }) .save-button`)
+        .querySelector(`tr:nth-child(${ index + 1 }) .save-button`)
         
       buttonSave.style.display = 'none'
 
@@ -332,11 +346,40 @@ export default {
       })
 
       this.getTotalOrderClientByDni()
+    },
+
+    updateState($event) {
+        console.log($event.target.value)
+        this.dataOrder.stateOrder = $event.target.value
+
+    },
+
+    updateDeliverDate($event) {
+      this.dataOrder.deliverDate = $event.target.value
+    },
+
+    updateDescription($event) {
+      this.dataOrder.description = $event.target.value
+    },
+
+    onSaveData() {
+      this.updateWorkOrder(this.dataOrder).then(() => {
+        this.loadClientByDni(this.getDniCurrentClient)
+        this.$emit('setSaveData', false)
+      })
     }
   },
 
   computed: {
     ...mapGetters('repair', ['getClientByDni']),
+
+    getDniCurrentClient() {
+      const { dni: dniCurrentClient } = this.getClientByDni
+
+      console.log('dni current client', typeof dniCurrentClient)
+
+      return dniCurrentClient
+    }
     
     
   },

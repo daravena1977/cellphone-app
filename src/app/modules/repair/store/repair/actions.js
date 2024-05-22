@@ -24,14 +24,11 @@ export const loadRepairCellphone = async ({ commit }, repair) => {
 }
 
 export const changePrice = ({ commit }, data) => {
-    console.log(typeof data.price)
     commit('setNewPrice', data)
 }
 
 export const createWorkOrder = async ({ commit }, dataOrder) => {
     await cellPhoneApi.post('/workorders', dataOrder)
-
-    console.log(dataOrder, 'esta es la data order')
 
     commit('setDataOrder', dataOrder)
 }
@@ -45,8 +42,7 @@ export const getCorrelativeWorkOrder = async ({ commit }) => {
 
 }
 
-export const getClientByDni = async ({ commit }, dni) => {
-    console.log(typeof dni)
+export const loadClientByDni = async ({ commit }, dni) => {
 
     const { data } = await cellPhoneApi.post('/client', `dni=${dni}`, config)
 
@@ -101,6 +97,14 @@ export const findWorkOrdersByState = async ({ commit }, stateOrder ) => {
         })
 
     commit('setWorkOrdersByState', data)
+
+    return data
+}
+
+export const updateWorkOrder = async ({ commit }, workOrderUpdated) => {
+    const { data } = await cellPhoneApi.put('/workorders/update', workOrderUpdated)
+
+    commit ('setWorkOrderUpdated', data)
 
     return data
 }

@@ -242,7 +242,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('repair', ['getCorrelativeWorkOrder', 'getClientByDni']),
+    ...mapActions('repair', ['getCorrelativeWorkOrder', 'loadClientByDni']),
     ...mapMutations('repair', ['resetDataOrder', 'resetClientByDni']),
 
     setStatus($event) {
@@ -260,10 +260,8 @@ export default {
         return
       }
       
-      this.getClientByDni(dni)
+      this.loadClientByDni(dni)
         .then((data) => {
-          console.log(data)
-          console.log('es data')
           this.orderData.firstName = data.firstName
           this.orderData.lastName = data.lastName
           this.orderData.address = data.address

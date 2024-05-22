@@ -20,6 +20,8 @@
 export default {
     name: 'SelectState',
 
+    emits: ['setStatus'],
+
     data() {
         return {
             statusOrders: ['ENTREGADO', 'PENDIENTE', 'SIN_SOLUCION', 'ANULADA'],

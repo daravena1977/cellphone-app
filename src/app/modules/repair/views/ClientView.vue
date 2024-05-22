@@ -2,7 +2,7 @@
   <div class="row">
     <form></form>
     <div class="col col-lg-5">
-      <PersonalData @send-dni="validateDni" @sendClientExists="setClientExists" :isDisabledProp="isDisabled"
+      <PersonalData @send-dni="validateDni; updateDni" @sendClientExists="setClientExists" :isDisabledProp="isDisabled"
         :showField="showField" :lengendProp="title" :resetFormFromClientView="resetClientDataForm"
         :focusInputDni="resetDniData" />
 
@@ -35,41 +35,21 @@
       <form class="form-control" v-if="showTable && showPendingOrders">
         <legend>{{ tableTitle }}</legend>
         <hr />
+
+        <!-- TableWorkOrder -->
         <TableWorkOrders @sendDataWorkOrdersRepairs="setDataWorkOrder" @openModalWorkOrder="setShowModal" :workOrders="getPendingOrders" />
       </form>
-      <!-- Modal WorkOrder -->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5>Orden de trabajo</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <WorkOrder :editingMode="editingMode" :dataWorkOrder="dataWorkOrder" />
-            </div>
-            <div class="modal-footer">
-              <button v-if="!editingMode" @click="editingMode = true; showButtonSave = true" type="button" class="btn btn-primary">
-                Editar
-              </button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                Cerrar
-              </button>
-              <button v-if="showButtonSave" type="button" class="btn btn-danger">
-                Guardar
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <!-- Modal WorkOrderDetail -->
+      <ModalWorkOrderDetail @close-modal="closeModal" :openModal="openModal" :dataWorkOrder="dataWorkOrder" />
+      
     </div>
   </div>
 </template>
 
 <script>
-import bootstrapBundle from 'bootstrap/dist/js/bootstrap.bundle'
 import { defineAsyncComponent } from 'vue'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'ClientView',
@@ -78,10 +58,13 @@ export default {
     PersonalData: defineAsyncComponent(() =>
       import('@/app/shared/PersonalData')
     ),
+
     TableWorkOrders: defineAsyncComponent(() =>
       import('@/app/shared/TableWorkOrders')
     ),
-    WorkOrder: defineAsyncComponent(() => import('@/app/shared/WorkOrder')),
+
+    ModalWorkOrderDetail: defineAsyncComponent(() => 
+      import('@/app/shared/ModalWorkOrderDetail'))
   },
 
   data() {
@@ -98,14 +81,14 @@ export default {
       title: 'Buscar Cliente',
       showModal: false,
       dataWorkOrder: {},
-      editingMode: false,
-      modalWorkOrder: {},
-      showButtonSave: false
+      openModal: false,
+      dniUpdated: ''
     }
   },
 
   methods: {
     ...mapMutations('repair', ['resetClientByDni']),
+    ...mapActions('repair', ['loadClientByDni']),
 
     onResetClientByDni() {
       this.resetClientByDni()
@@ -132,18 +115,21 @@ export default {
     },
 
     setShowModal() {
-      let modal = new bootstrapBundle.Modal(document.getElementById('myModal'))
-      this.modalWorkOrder = modal
-      modal.show()
+      this.openModal = true
     },
 
     closeModal() {
-      this.showModal = false
+      this.openModal = false
     },
 
     setDataWorkOrder(data) {
       this.dataWorkOrder = data
     },
+
+    updateDni(dni) {
+      console.log('updateDni')
+      this.dniUpdated = dni
+    }
 
   },
 
