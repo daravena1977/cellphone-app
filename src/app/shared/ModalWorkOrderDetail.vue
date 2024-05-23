@@ -8,20 +8,51 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <WorkOrder @setSaveData="setSaveData" :editingMode="editingMode" :dataWorkOrder="dataWorkOrder" :saveData="saveData" />
+                    <WorkOrder @setSaveData="setSaveData" :editingMode="editingMode" :dataWorkOrder="dataWorkOrder"
+                        :saveData="saveData" />
                 </div>
                 <div class="modal-footer">
-                    <button v-if="!editingMode" @click="editingMode = true; showButtonSave = true" type="button"
-                        class="btn btn-primary">
-                        Editar
-                    </button>
-                    <button @click="$emit('close-modal')" type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-                        Cerrar
-                    </button>
-                    <button @click="saveData = true; editingMode = false; showButtonSave = false" v-if="showButtonSave" type="button" class="btn btn-danger">
-                        Guardar
-                    </button>
+                    <div class="input-group flex-nowrap gap-2 justify-content-end">
+                        <div v-if="editingMode" class="input-group w-auto flex-nowrap">
+                                <button class="btn" style="background-color: #f6ae2d;">
+                                    <i class="fas fa-mobile-alt" style="color: white;"></i><i class="fas fa-tools" style="color: white;"></i>
+                                </button>
+                                <button class="btn btn-warning" style="color: white;">
+                                    Agregar reparación
+                                </button>
+
+                            </div>
+                            <div class="input-group w-auto flex-nowrap">
+                                <button v-if="!editingMode" @click="editingMode = true; showButtonSave = true" type="button" class="btn" style="background-color: #da5552;">
+                                    <i class="fa-solid fa-pen-to-square" style="color: white;"></i>
+                                </button>
+                                <button v-if="!editingMode" @click="editingMode = true; showButtonSave = true" type="button"
+                                    class="btn btn-danger">
+                                    Editar
+                                </button>
+                            </div>
+                        <div class="input-group w-auto flex-nowrap">
+                            <button @click="$emit('close-modal')" type="button" class="btn" data-bs-dismiss="modal" style="background-color: #2d6a4f;">
+                                <i class="fa-solid fa-door-open" style="color: white;"></i>
+                            </button>
+                            <button @click="$emit('close-modal')" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                                Cerrar
+                            </button>
+                        </div>
+                        <div class="input-group w-auto flex-nowrap">
+                            <button @click="saveData = true; editingMode = false; showButtonSave = false"
+                                v-if="showButtonSave" class="btn" style="background-color: #da5552;">
+                                <i class="fa-regular fa-floppy-disk" style="color: white;"></i>
+                            </button>
+                            <button @click="saveData = true; editingMode = false; showButtonSave = false"
+                                v-if="showButtonSave" type="button" class="btn btn-danger">
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                            
+
                 </div>
             </div>
         </div>
@@ -82,4 +113,5 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+</style>

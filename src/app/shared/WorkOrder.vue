@@ -429,10 +429,4 @@ table {
 .total-order {
   text-align: end;
 }
-
-
-
-
-/* table {
-} */
 </style>
