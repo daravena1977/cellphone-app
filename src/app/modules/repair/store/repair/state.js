@@ -12,5 +12,6 @@ export default () => ({
         description: '',
         stateOrder: '',
         workorderRepairCellphones: []
-    }
+    },
+    repairDeleted: {}
 })

@@ -60,3 +60,24 @@ export const resetDataTableSearchOrders = (state) => {
 export const updateWorkOrders = (state, newWorkOrders) => {
     state.workOrderUpdate.workorderRepairCellphones = [...newWorkOrders]
 }
+
+export const deleteWorkorderRepairCellphone = (state, paramsToDelete) => {
+
+    const { workorders } = state.clientByDni
+
+    let index = workorders.findIndex(workorder => workorder.id === paramsToDelete.idOrder)
+
+    let indexRepair = workorders[index].workorderRepairCellphones
+                            .findIndex(repair => repair.id === paramsToDelete.idRepair)
+
+    if (indexRepair !== -1) {
+        workorders[index].workorderRepairCellphones.splice(indexRepair, 1)
+    }
+
+    /* let index = state.clientByDni.workorders.workorderRepairCellphones.findIndex(repair => repair.id === id)
+    
+    if (index !== -1) {
+        state.clientByDni.workorders.workorderRepairCellphones.splice(index, 1)
+    }
+    console.log('hizo mutacion delete') */
+}

@@ -109,4 +109,18 @@ export const updateWorkOrder = async ({ commit }, workOrderUpdated) => {
     return data
 }
 
+export const deleteWorkorderRepairCellphoneById = async ({ commit }, paramsToDelete) => {
 
+    const { idRepair } = paramsToDelete
+
+    await cellPhoneApi.delete('/workorderRepairCellphone/delete-by-id', {
+        params: {
+            id: idRepair
+        }
+    }).then(() => {
+        console.log('hizo delete en bd')
+        
+    })
+    commit ('deleteWorkorderRepairCellphone', paramsToDelete)
+
+}

@@ -173,8 +173,8 @@
                   <i class="fa-solid fa-floppy-disk"></i>
                 </button>
                 <button
-                  @click.prevent="$emit('delete-repair', index)"
-                  class="btn"
+                  @click.prevent="onDeleteWorkorderRepairCellphone(index, id)"
+                  class="btn delete-button"
                 >
                   <i class="fa-solid fa-trash" style="color: #df1530"></i>
                 </button>
@@ -221,7 +221,11 @@ export default {
       paymentEdit: '',
       isDisabled: true,
       showSave: false,
-      totalOrder: 0
+      totalOrder: 0,
+      paramsToDelete: {
+        idRepair: 0,
+        idOrder: 0
+      }
     }
   },
 
@@ -271,7 +275,8 @@ export default {
   },
 
   methods: {
-  ...mapActions('repair', ['updateWorkOrder', 'loadClientByDni']),
+  ...mapActions('repair', ['updateWorkOrder', 'loadClientByDni', 
+  'deleteWorkorderRepairCellphoneById']),
   ...mapMutations('repair', ['updateWorkOrders']),
 
     updateItem(id, newValue) {
@@ -326,7 +331,7 @@ export default {
     setNewPayment(index, id) {
       const inputPayment = document
         .querySelector(`tr:nth-child(${ index + 1 }) .myInputPayment`)
-
+        
       const buttonSave = document
         .querySelector(`tr:nth-child(${ index + 1 }) .save-button`)
         
@@ -348,6 +353,22 @@ export default {
       this.getTotalOrderClientByDni()
     },
 
+    onDeleteWorkorderRepairCellphone(index, id) {
+
+      this.paramsToDelete.idRepair = id
+      this.paramsToDelete.idOrder = this.dataOrder.id
+
+      this.deleteWorkorderRepairCellphoneById(this.paramsToDelete).then(() => {
+        let indexOrder = this.dataOrder.workorderRepairCellphones.findIndex(repair => repair.id === id)
+
+        if (indexOrder !== -1) {
+          this.dataOrder.workorderRepairCellphones.splice(indexOrder, 1)
+          this.getTotalOrderClientByDni()
+        }
+      })
+      
+    },
+
     updateState($event) {
         console.log($event.target.value)
         this.dataOrder.stateOrder = $event.target.value
@@ -360,7 +381,7 @@ export default {
 
     updateDescription($event) {
       this.dataOrder.description = $event.target.value
-    },
+    },    
 
     onSaveData() {
       this.updateWorkOrder(this.dataOrder).then(() => {
@@ -375,9 +396,6 @@ export default {
 
     getDniCurrentClient() {
       const { dni: dniCurrentClient } = this.getClientByDni
-
-      console.log('dni current client', typeof dniCurrentClient)
-
       return dniCurrentClient
     }
     
