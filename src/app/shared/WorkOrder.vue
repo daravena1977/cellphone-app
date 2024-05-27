@@ -104,8 +104,6 @@
           aria-describedby="basic-addon8"
           disabled
         />
-      </div>
-      <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="basic-addon9">Dirección</span>
         <input
           v-model="getClientByDni.address"
@@ -130,7 +128,13 @@
 
       <hr />
 
+      <!-- TODO: colocar aca repairData -->
+      
       <div class="input-group input-group-sm">
+        <div class="w-75 m-auto mb-2">
+          <RepairData class="form-select-sm" v-if="showAddRepair" @addRepair="addRepair" />
+  
+        </div>
         <table class="table table-bordered table-hover">
           <caption>
             Listado de reparaciones
@@ -212,7 +216,8 @@ export default {
 
   components: {
     InputToVFor: defineAsyncComponent(() => import('@/app/shared/InputToVFor')),
-    SelectState: defineAsyncComponent(() => import('@/app/shared/SelectState'))
+    SelectState: defineAsyncComponent(() => import('@/app/shared/SelectState')),
+    RepairData: defineAsyncComponent(() => import('@/app/shared/RepairData'))
   },
 
   data() {
@@ -224,7 +229,12 @@ export default {
       totalOrder: 0,
       paramsToDelete: {
         idRepair: 0,
-        idOrder: 0
+        idOrder: 0,
+      },
+      newWorkorderRepairCellphone: {
+        idWorkorder: 0,
+        idRepair: 0,
+        price: 0,
       }
     }
   },
@@ -248,27 +258,32 @@ export default {
     saveData: {
       type: Boolean,
       default: false
+    },
+
+    showAddRepair: {
+      type: Boolean,
+      default: false,
     }
   },
 
   watch: {
-    dataWorkOrder(value) {
-      if (value) {
+    dataWorkOrder( value ) {
+      if ( value ) {
         this.dataOrder = value
         this.getTotalOrderClientByDni()
       }
     },
 
-    editingMode(value) {
-      if (value) {
+    editingMode( value ) {
+      if ( value ) {
         this.$nextTick(() => {
           this.setButtonSave()
         })
       }
     },
 
-    saveData(value) {
-      if (value) {
+    saveData( value ) {
+      if ( value ) {
         this.onSaveData()
       }
     }
@@ -276,42 +291,43 @@ export default {
 
   methods: {
   ...mapActions('repair', ['updateWorkOrder', 'loadClientByDni', 
-  'deleteWorkorderRepairCellphoneById']),
-  ...mapMutations('repair', ['updateWorkOrders']),
+  'deleteWorkorderRepairCellphoneById', 'loadRepairCellphone', 
+  'addWorkorderRepairCellphone']),
+  ...mapMutations('repair', ['updateWorkOrders', 'resetRepairsTable']),
 
-    updateItem(id, newValue) {
+    updateItem( id, newValue ) {
       const index = this.dataOrder.workorderRepairCellphones
-        .findIndex((item) => item.id === id)
-
-      if (index !== -1) {
-        this.dataOrder.workorderRepairCellphones[index].payment = newValue
+        .findIndex(( item ) => item.id === id)
+ 
+      if ( index !== -1 ) {
+        this.dataOrder.workorderRepairCellphones[ index ].payment = newValue
       }
     },
 
-    editPayment(index) {
+    editPayment( index ) {
       const buttonEdit = document
-        .querySelector(`tr:nth-child(${index + 1}) .edit-button`)
+        .querySelector(`tr:nth-child(${ index + 1 }) .edit-button`)
       
       buttonEdit.style.display = 'none'
 
       this.showSave = false
 
       const buttonSave = document
-        .querySelector(`tr:nth-child(${index + 1}) .save-button`)
+        .querySelector(`tr:nth-child(${ index + 1 }) .save-button`)
 
       buttonSave.style.display = 'inline-block'
 
       this.$nextTick(() => {
         const inputPayment = document
-          .querySelector(`tr:nth-child(${index + 1}) .myInputPayment`)
+          .querySelector(`tr:nth-child(${ index + 1 }) .myInputPayment`)
 
-        inputPayment.removeAttribute('disabled')  
+        inputPayment.removeAttribute( 'disabled' )  
         inputPayment.select()
       })
     },
 
     setButtonSave() {
-      this.dataOrder.workorderRepairCellphones.forEach(( _ , index) => {
+      this.dataOrder.workorderRepairCellphones.forEach((  _ , index ) => {
           
           const buttonSave = document
             .querySelector(`tr:nth-child(${ index+ 1 }) .save-button`)
@@ -328,7 +344,7 @@ export default {
       this.totalOrder = total
     },
 
-    setNewPayment(index, id) {
+    setNewPayment( index, id ) {
       const inputPayment = document
         .querySelector(`tr:nth-child(${ index + 1 }) .myInputPayment`)
         
@@ -342,64 +358,97 @@ export default {
 
       buttonEdit.style.display = 'inline-block'
 
-      inputPayment.setAttribute('disabled', 'true')
+      inputPayment.setAttribute( 'disabled', 'true' )
 
       this.dataOrder.workorderRepairCellphones.forEach(order => {
-        if (order.id === id) {
-          order.payment = parseInt(inputPayment.value)
+        if ( order.id === id ) {
+          order.payment = parseInt( inputPayment.value )
         }
       })
 
       this.getTotalOrderClientByDni()
+
+      this.onSaveData()
     },
 
-    onDeleteWorkorderRepairCellphone(index, id) {
+    onDeleteWorkorderRepairCellphone( index, id ) {
 
       this.paramsToDelete.idRepair = id
       this.paramsToDelete.idOrder = this.dataOrder.id
 
-      this.deleteWorkorderRepairCellphoneById(this.paramsToDelete).then(() => {
-        let indexOrder = this.dataOrder.workorderRepairCellphones.findIndex(repair => repair.id === id)
+      this.deleteWorkorderRepairCellphoneById( this.paramsToDelete ).then(() => {
+        let indexOrder = this.dataOrder.workorderRepairCellphones.findIndex( repair => repair.id === id )
 
-        if (indexOrder !== -1) {
-          this.dataOrder.workorderRepairCellphones.splice(indexOrder, 1)
+        if ( indexOrder !== -1 ) {
+          this.dataOrder.workorderRepairCellphones.splice( indexOrder, 1 )
           this.getTotalOrderClientByDni()
         }
       })
       
     },
 
-    updateState($event) {
+    updateState( $event ) {
         console.log($event.target.value)
         this.dataOrder.stateOrder = $event.target.value
 
     },
 
-    updateDeliverDate($event) {
+    updateDeliverDate( $event ) {
       this.dataOrder.deliverDate = $event.target.value
     },
 
-    updateDescription($event) {
+    updateDescription( $event ) {
       this.dataOrder.description = $event.target.value
     },    
 
     onSaveData() {
-      this.updateWorkOrder(this.dataOrder).then(() => {
-        this.loadClientByDni(this.getDniCurrentClient)
-        this.$emit('setSaveData', false)
+      this.updateWorkOrder( this.dataOrder ).then(() => {
+        this.loadClientByDni( this.getDniCurrentClient )
+        this.$emit( 'setSaveData', false )
+      })
+    },
+
+    addRepair( repair ) {
+      console.log('paso 2')
+      this.loadRepairCellphone( repair ).then(( data ) => {
+        this.newWorkorderRepairCellphone.price = data.price
+        this.newWorkorderRepairCellphone.idWorkorder = this.dataOrder.id
+        this.newWorkorderRepairCellphone.idRepair = data.id
+
+        this.addWorkorderRepairCellphone( this.newWorkorderRepairCellphone ).then(() => {
+
+          this.loadClientByDni( this.getDniCurrentClient ).then(() => {
+            let workOrderCurrent = this.getWorkordersClientByDni.filter(workOrder => workOrder.id === this.dataOrder.id)
+    
+            console.log( 'workordercurrent', workOrderCurrent[0].workorderRepairCellphones )
+  
+            this.dataOrder.workorderRepairCellphones = workOrderCurrent[0].workorderRepairCellphones
+
+            this.getTotalOrderClientByDni()
+
+            this.resetRepairsTable()
+  
+            this.$nextTick(() => {
+              this.setButtonSave()
+  
+            })  
+          })
+        })
+
+
+
+
       })
     }
   },
 
   computed: {
-    ...mapGetters('repair', ['getClientByDni']),
+    ...mapGetters('repair', ['getClientByDni', 'getNewWorkorderRepairCellphone', 'getWorkordersClientByDni']),
 
     getDniCurrentClient() {
       const { dni: dniCurrentClient } = this.getClientByDni
       return dniCurrentClient
-    }
-    
-    
+    }    
   },
 
 }

@@ -74,10 +74,7 @@ export const deleteWorkorderRepairCellphone = (state, paramsToDelete) => {
         workorders[index].workorderRepairCellphones.splice(indexRepair, 1)
     }
 
-    /* let index = state.clientByDni.workorders.workorderRepairCellphones.findIndex(repair => repair.id === id)
-    
-    if (index !== -1) {
-        state.clientByDni.workorders.workorderRepairCellphones.splice(index, 1)
-    }
-    console.log('hizo mutacion delete') */
 }
+
+export const setNewWorkorderRepairCellphone = (state, 
+    data) => state.newWorkorderRepairCellphone = data

@@ -21,6 +21,8 @@ export const loadRepairCellphone = async ({ commit }, repair) => {
     const { data } = await cellPhoneApi.post('/repaircellphone', repair)
 
     commit('setRepairCellphone', data)
+
+    return data
 }
 
 export const changePrice = ({ commit }, data) => {
@@ -61,35 +63,35 @@ export const addWorkOrderClientExists = async ({ commit }, dataOrder) => {
 
 export const findWorkOrdersByNumber = async ({ commit }, numberOrder) => {
     const { data } = await cellPhoneApi.get('/workorders/all-by-number',
-            {
-                params: {
-                    number: numberOrder
-                }
-            })
+        {
+            params: {
+                number: numberOrder
+            }
+        })
 
     commit('setWorkOrdersByNumber', data)
     return data
 }
 
 export const findWorkOrdersByDate = async ({ commit }, paramsDate) => {
-    
+
     const { startDate, endDate } = paramsDate
-    
-    const { data } = await cellPhoneApi.get('/workorders/find-by-date', 
-    {
-        params: {
-            startDateStr: startDate,
-            endDateStr: endDate
-        }
-    })
+
+    const { data } = await cellPhoneApi.get('/workorders/find-by-date',
+        {
+            params: {
+                startDateStr: startDate,
+                endDateStr: endDate
+            }
+        })
 
     commit('setWorkOrdersByDate', data)
 
     return data
 }
 
-export const findWorkOrdersByState = async ({ commit }, stateOrder ) => {
-    const { data } = await cellPhoneApi.get('/workorders/find-by-state', 
+export const findWorkOrdersByState = async ({ commit }, stateOrder) => {
+    const { data } = await cellPhoneApi.get('/workorders/find-by-state',
         {
             params: {
                 stateOrder
@@ -104,7 +106,7 @@ export const findWorkOrdersByState = async ({ commit }, stateOrder ) => {
 export const updateWorkOrder = async ({ commit }, workOrderUpdated) => {
     const { data } = await cellPhoneApi.put('/workorders/update', workOrderUpdated)
 
-    commit ('setWorkOrderUpdated', data)
+    commit('setWorkOrderUpdated', data)
 
     return data
 }
@@ -119,8 +121,19 @@ export const deleteWorkorderRepairCellphoneById = async ({ commit }, paramsToDel
         }
     }).then(() => {
         console.log('hizo delete en bd')
-        
-    })
-    commit ('deleteWorkorderRepairCellphone', paramsToDelete)
 
+    })
+    commit('deleteWorkorderRepairCellphone', paramsToDelete)
+
+}
+
+export const addWorkorderRepairCellphone = async ({ commit }, 
+    newWorkorderRepairCellphone) => {
+        
+    const { data } = await cellPhoneApi.post('/workordersRepairCellphone/new-repair',
+        newWorkorderRepairCellphone)
+
+    commit('setNewWorkorderRepairCellphone', data)
+
+    return data
 }

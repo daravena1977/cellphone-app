@@ -46,3 +46,11 @@ export const getTableWorkOrdersByState = (state) => {
         }
     })
 } */
+
+export const getNewWorkorderRepairCellphone = (state) => {
+    return state.newWorkorderRepairCellphone
+}
+
+export const getWorkordersClientByDni = ( state ) => {
+    return state.clientByDni.workorders
+}

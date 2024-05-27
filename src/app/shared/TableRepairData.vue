@@ -1,7 +1,7 @@
 <template>
-        <table class="table table-hover mb-3">
+        <table class="table table-hover mb-3 p-0">
             <thead class="table-info">
-                <tr>
+                <tr class="p-0">
                     <th scope="col">Nº</th>
                     <th scope="col">Marca</th>
                     <th scope="col">Modelo</th>
@@ -11,7 +11,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for=" ({ cellphone, repair, price }, index) in repairsData" 
+                <tr class="p-0" v-for=" ({ cellphone, repair, price }, index) in repairsData" 
                 :key="index">
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ cellphone.brand }}</td>

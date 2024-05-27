@@ -13,7 +13,7 @@
 
     <div class="repair-data form-control">
       <div class="d-flex flex-column">
-        <RepairData class="mb-4" />
+        <RepairData @addRepair="getRepair" class="mb-4" />
         <div>
           <TableRepairData
             v-if="getRepairsData.length > 0"
@@ -126,9 +126,27 @@ export default {
       'changePrice',
       'createWorkOrder',
       'getCorrelativeWorkOrder',
-      'addWorkOrderClientExists',
+      'addWorkOrderClientExists', 'loadRepairCellphone',
     ]),
-    ...mapMutations('repair', ['resetRepairsTable']),
+    ...mapMutations('repair', ['resetRepairsTable', 'deleteRepairCellphone']),
+
+    getRepair(repair) {
+      this.loadRepairCellphone(repair).then(() => {
+        /* Esto es para eliminar los registros repetidos y no permitir ingresar otro igual */
+        const arrayCompare = new Set()
+        this.repairs.forEach((repair) =>
+          arrayCompare.add(JSON.stringify(repair))
+        )
+
+        if (arrayCompare.size !== this.repairs.length) {
+          this.deleteRepairCellphone(repair)
+          alert('este tipo de reparacion ya fue ingresado')
+        }
+
+
+        console.log('paso 1')
+      })
+    },
 
     removeRepair(id) {
       console.log(id)
@@ -166,7 +184,6 @@ export default {
         .then(() => {
           this.resetDataForm()
           this.clientExists = false
-          console.log('paso por addWorkOrderClientExists')
         })
         .catch((error) => {
           console.log(error.response.data)
@@ -181,19 +198,17 @@ export default {
           this.resetDataForm()
         })
         .catch((error) => {
-          console.log('paso por este error el cliente que no existe')
-          console.log(error.response.data)
           alert(error.response.data)
         })
     },
 
     setCorrelativeNumber() {
-      this.getCorrelativeWorkOrder().then((data) => {
+      this.getCorrelativeWorkOrder().then(( data ) => {
         this.correlative = data.correlativeNumber
       })
     },
 
-    onSendClientExists(clientExists) {
+    onSendClientExists( clientExists ) {
       this.clientExists = clientExists
     },
   },
@@ -205,7 +220,7 @@ export default {
       'getDataOrder',
       'getClientByDni',
     ]),
-    ...mapState('repair', ['repairs', 'dataOrder']),
+    ...mapState('repair', [ 'repairs', 'dataOrder' ]),
 
     getRepairsData() {
       return this.getRepairs

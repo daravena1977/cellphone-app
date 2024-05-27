@@ -1,22 +1,33 @@
 <template>
   <form class="">
     <section>
-      <legend>Detalle de Reparaciones</legend>
-      <hr>
       <div class="d-flex justify-content-between gap-3">
-        <SelectBrand class="form-select-sm" @selection="setBrand" :resetBrand="repair.idBrand" />
+        <SelectBrand
+          class="form-select-sm w-50"
+          @selection="setBrand"
+          :resetBrand="repair.idBrand"
+        />
 
-        <SelectModel class="form-select-sm" @selection-model="setModel" :brand="repair.idBrand" />
+        <SelectModel
+          class="form-select-sm w-50"
+          @selection-model="setModel"
+          :brand="repair.idBrand"
+        />
 
-        <SelectTypeRepair @selection-type-repair="setTypeRepair" :resetType="repair.idTypeRepair"
-          class="form-select-sm" />
+        <SelectTypeRepair
+          @selection-type-repair="setTypeRepair"
+          :resetType="repair.idTypeRepair"
+          class="form-select-sm w-50"
+        />
 
-        <button @click.prevent="getRepair" class="btn btn-success" :disabled="onAllSelected">
-          Agregar
+        <button
+          @click.prevent="addRepair"
+          class="btn btn-success w-25"
+          :disabled="onAllSelected"
+        >
+        <i class="fa-solid fa-plus"></i> <i class="fas fa-mobile-alt" style="color: white;"></i><i class="fas fa-tools" style="color: white;"></i>
         </button>
-
       </div>
-
     </section>
   </form>
 </template>
@@ -29,7 +40,9 @@ export default {
   components: {
     SelectBrand: defineAsyncComponent(() => import('@/app/shared/SelectBrand')),
     SelectModel: defineAsyncComponent(() => import('@/app/shared/SelectModel')),
-    SelectTypeRepair: defineAsyncComponent(() => import('@/app/shared/SelectTypeRepair'))
+    SelectTypeRepair: defineAsyncComponent(() =>
+      import('@/app/shared/SelectTypeRepair')
+    ),
   },
 
   data() {
@@ -39,16 +52,14 @@ export default {
         idModel: 0,
         idTypeRepair: 0,
       },
-      temporal: [],
-      duplicated: [],
-      allSelected: false
+      allSelected: false,
     }
   },
 
   methods: {
-    ...mapActions('setup', (['loadBrands', 'loadTypesRepairs'])),
-    ...mapActions('repair', (['loadRepairCellphone'])),
-    ...mapMutations('repair', (['deleteRepairCellphone'])),
+    ...mapActions('setup', ['loadBrands', 'loadTypesRepairs']),
+    ...mapActions('repair', ['loadRepairCellphone']),
+    ...mapMutations('repair', ['deleteRepairCellphone']),
 
     setBrand(selection) {
       this.repair.idBrand = parseInt(selection)
@@ -62,45 +73,35 @@ export default {
       this.repair.idTypeRepair = parseInt(selection)
     },
 
-    getRepair() {     
-      
-      this.loadRepairCellphone(this.repair).then(() => {
-          /* Esto es para eliminar los registros repetidos y no permitir ingresar otro igual */
-          const arrayCompare = new Set()
-          this.repairs.forEach((repair) => arrayCompare.add(JSON.stringify(repair) ))
+    addRepair() {
+      this.$emit('addRepair', this.repair)
 
-          if (arrayCompare.size !== this.repairs.length) {
-            this.deleteRepairCellphone(this.repair)
-            alert('este tipo de reparacion ya fue ingresado')
-          }
-
-          this.repair.idBrand = 0
-          this.repair.idModel = 0
-          this.repair.idTypeRepair = 0
-    
-        })
-      }
-
+      this.repair.idBrand = 0
+      this.repair.idModel = 0
+      this.repair.idTypeRepair = 0
+    }
   },
 
   computed: {
-    ...mapState('repair', (['repairs'])),
-    ...mapGetters('setup', (['getTypesRepairs'])),
+    ...mapState('repair', ['repairs']),
+    ...mapGetters('setup', ['getTypesRepairs']),
 
     onAllSelected() {
-      if (this.repair.idBrand !== 0 && this.repair.idModel !== 0 && this.repair.idTypeRepair !== 0) {      
-      return  false
+      if (
+        this.repair.idBrand !== 0 &&
+        this.repair.idModel !== 0 &&
+        this.repair.idTypeRepair !== 0
+      ) {
+        return false
       }
       return true
-    }
-
+    },
   },
 
   created() {
     this.loadBrands()
     this.loadTypesRepairs()
-  }
-
+  },
 }
 </script>
 
@@ -112,4 +113,5 @@ export default {
 hr {
   border: 1px solid #000;
 }
+
 </style>

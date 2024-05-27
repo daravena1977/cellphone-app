@@ -5,10 +5,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5>Orden de trabajo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button @click="$emit('close-modal')" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <WorkOrder @setSaveData="setSaveData" :editingMode="editingMode" :dataWorkOrder="dataWorkOrder"
+                    <WorkOrder :showAddRepair="showAddRepair" @setSaveData="setSaveData" :editingMode="editingMode" :dataWorkOrder="dataWorkOrder"
                         :saveData="saveData" />
                 </div>
                 <div class="modal-footer">
@@ -17,10 +17,9 @@
                                 <button class="btn" style="background-color: #f6ae2d;">
                                     <i class="fas fa-mobile-alt" style="color: white;"></i><i class="fas fa-tools" style="color: white;"></i>
                                 </button>
-                                <button class="btn btn-warning" style="color: white;">
+                                <button @click="showAddRepair = true" class="btn btn-warning" style="color: white;">
                                     Agregar reparación
                                 </button>
-
                             </div>
                             <div class="input-group w-auto flex-nowrap">
                                 <button v-if="!editingMode" @click="editingMode = true; showButtonSave = true" type="button" class="btn" style="background-color: #da5552;">
@@ -45,14 +44,13 @@
                                 v-if="showButtonSave" class="btn" style="background-color: #da5552;">
                                 <i class="fa-regular fa-floppy-disk" style="color: white;"></i>
                             </button>
-                            <button @click="saveData = true; editingMode = false; showButtonSave = false"
+                            <button @click="saveData = true; editingMode = false; showButtonSave = false;
+                             showAddRepair = false"
                                 v-if="showButtonSave" type="button" class="btn btn-danger">
                                 Guardar
                             </button>
                         </div>
                     </div>
-                            
-
                 </div>
             </div>
         </div>
@@ -74,7 +72,8 @@ export default {
         return {
             editingMode: false,
             showButtonSave: false,
-            saveData: false
+            saveData: false,
+            showAddRepair: false,
         }
     },
 
