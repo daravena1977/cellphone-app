@@ -130,10 +130,14 @@ export const deleteWorkorderRepairCellphoneById = async ({ commit }, paramsToDel
 export const addWorkorderRepairCellphone = async ({ commit }, 
     newWorkorderRepairCellphone) => {
         
-    const { data } = await cellPhoneApi.post('/workordersRepairCellphone/new-repair',
+     await cellPhoneApi.post('/workordersRepairCellphone/new-repair',
         newWorkorderRepairCellphone)
+        .then((data) => {
+            commit('setNewWorkorderRepairCellphone', data)        
+        })
+        .catch(err => {
+            console.log(err)
+            alert('No puede agregar de nuevo este tipo de reparación')
+        })
 
-    commit('setNewWorkorderRepairCellphone', data)
-
-    return data
 }

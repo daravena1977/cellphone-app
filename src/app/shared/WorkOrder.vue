@@ -211,6 +211,7 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { defineAsyncComponent } from 'vue'
 
+
 export default {
   name: 'WorkOrder',
 
@@ -409,7 +410,6 @@ export default {
     },
 
     addRepair( repair ) {
-      console.log('paso 2')
       this.loadRepairCellphone( repair ).then(( data ) => {
         this.newWorkorderRepairCellphone.price = data.price
         this.newWorkorderRepairCellphone.idWorkorder = this.dataOrder.id
@@ -418,9 +418,7 @@ export default {
         this.addWorkorderRepairCellphone( this.newWorkorderRepairCellphone ).then(() => {
 
           this.loadClientByDni( this.getDniCurrentClient ).then(() => {
-            let workOrderCurrent = this.getWorkordersClientByDni.filter(workOrder => workOrder.id === this.dataOrder.id)
-    
-            console.log( 'workordercurrent', workOrderCurrent[0].workorderRepairCellphones )
+            let workOrderCurrent = this.getWorkordersClientByDni.filter(workOrder => workOrder.id === this.dataOrder.id)    
   
             this.dataOrder.workorderRepairCellphones = workOrderCurrent[0].workorderRepairCellphones
 
@@ -431,13 +429,9 @@ export default {
             this.$nextTick(() => {
               this.setButtonSave()
   
-            })  
-          })
+            })
+          })          
         })
-
-
-
-
       })
     }
   },
