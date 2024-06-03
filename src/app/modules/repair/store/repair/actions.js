@@ -141,3 +141,13 @@ export const addWorkorderRepairCellphone = async ({ commit },
         })
 
 }
+
+export const loadClientById = async ({ commit }, idClient) => {
+    const { data } = await cellPhoneApi.get('/client/by-id', {
+        params: {
+            id: idClient
+        }
+    })
+        commit('setClientById', data)
+        return data
+}

@@ -3,6 +3,7 @@ export default () => ({
     dataOrder: {},
     correlativeWorKOrder: 0,
     clientByDni: {},
+    clientById: {},
     workOrdersByNumber: [],
     workOrdersByDate: [],
     workOrdersByState: [],

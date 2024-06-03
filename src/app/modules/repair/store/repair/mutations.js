@@ -78,3 +78,7 @@ export const deleteWorkorderRepairCellphone = (state, paramsToDelete) => {
 
 export const setNewWorkorderRepairCellphone = (state, 
     data) => state.newWorkorderRepairCellphone = data
+
+export const setClientById = (state, data) => {
+    state.clientById = data
+}

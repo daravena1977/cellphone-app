@@ -199,7 +199,6 @@
           aria-describedby="total_orden"
           disabled
         />
-
         </div>
 
       </div>

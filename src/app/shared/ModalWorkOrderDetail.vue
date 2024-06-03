@@ -30,15 +30,7 @@
                                     Editar
                                 </button>
                             </div>
-                        <div class="input-group w-auto flex-nowrap">
-                            <button @click="$emit('close-modal')" type="button" class="btn" data-bs-dismiss="modal" style="background-color: #2d6a4f;">
-                                <i class="fa-solid fa-door-open" style="color: white;"></i>
-                            </button>
-                            <button @click="$emit('close-modal')" type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">
-                                Cerrar
-                            </button>
-                        </div>
+                        
                         <div class="input-group w-auto flex-nowrap">
                             <button @click="saveData = true; editingMode = false; showButtonSave = false"
                                 v-if="showButtonSave" class="btn" style="background-color: #da5552;">
@@ -48,6 +40,15 @@
                              showAddRepair = false"
                                 v-if="showButtonSave" type="button" class="btn btn-danger">
                                 Guardar
+                            </button>
+                        </div>
+                        <div class="input-group w-auto flex-nowrap">
+                            <button @click="$emit('close-modal')" type="button" class="btn" data-bs-dismiss="modal" style="background-color: #2d6a4f;">
+                                <i class="fa-solid fa-door-open" style="color: white;"></i>
+                            </button>
+                            <button @click="$emit('close-modal')" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                                Cerrar
                             </button>
                         </div>
                     </div>

@@ -38,6 +38,8 @@
       <hr />
       <div>
         <TableWorkOrders
+          @sendDataWorkOrdersRepairs="setDataWorkOrder"
+          @openModalWorkOrder="setShowModal"
           v-if="showTable && getTableWorkOrdersByNumber.length > 0"
           class="w-75 m-auto"
           :workOrders="getTableWorkOrdersByNumber"
@@ -77,6 +79,8 @@
       </form>
       <div>
         <TableWorkOrders
+          @sendDataWorkOrdersRepairs="setDataWorkOrder"
+          @openModalWorkOrder="setShowModal"
           v-if="showTable && getTableWorkOrdersByDate.length > 0"
           class="w-75 m-0"
           :workOrders="getTableWorkOrdersByDate"
@@ -99,9 +103,12 @@
       </select>
     </div>
     <div>
-      <TableWorkOrders v-if="showTable && getTableWorkOrdersByState.length > 0" class="w-75 m-0" :workOrders="getTableWorkOrdersByState"/>  
+      <TableWorkOrders @sendDataWorkOrdersRepairs="setDataWorkOrder" @openModalWorkOrder="setShowModal" v-if="showTable && getTableWorkOrdersByState.length > 0" class="w-75 m-0" :workOrders="getTableWorkOrdersByState"/>  
     </div>
   </div>
+  <ModalWorkOrderDetails @close-modal="closeModal" :openModal="openModal"
+  :dataWorkOrder="dataWorkOrder" />
+
 </template>
 
 <script>
@@ -115,6 +122,7 @@ export default {
     TableWorkOrders: defineAsyncComponent(() =>
       import('@/app/shared/TableWorkOrders')
     ),
+    ModalWorkOrderDetails: defineAsyncComponent(() => import('@/app/shared/ModalWorkOrderDetail.vue')),
   },
 
   data() {
@@ -135,11 +143,13 @@ export default {
         endDate: '',
       },
       statusOrders: ['ENTREGADO', 'PENDIENTE', 'SIN_SOLUCION', 'ANULADA'],
+      openModal: false,
+      dataWorkOrder: {},
     }
   },
 
   methods: {
-    ...mapActions('repair', ['findWorkOrdersByNumber', 'findWorkOrdersByDate', 'findWorkOrdersByState']),
+    ...mapActions('repair', ['findWorkOrdersByNumber', 'findWorkOrdersByDate', 'findWorkOrdersByState', 'loadClientById', 'loadClientByDni']),
     ...mapMutations('repair', ['resetDataTableSearchOrders']),
 
     getWorkOrdersByNumber(numberOrder) {
@@ -206,6 +216,22 @@ export default {
         this.showOptionForDate = false
         this.showOptionForState = true
       }
+    },
+
+    setShowModal() {
+      this.openModal = true
+    },
+
+    closeModal() {
+      this.openModal = false
+    },
+
+    setDataWorkOrder(data) {
+      this.loadClientById(data.idClient)
+        .then(data => {
+          this.loadClientByDni(data.dni)
+        })      
+      this.dataWorkOrder = data
     },
   },
 

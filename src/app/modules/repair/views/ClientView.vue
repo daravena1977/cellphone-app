@@ -148,14 +148,6 @@ export default {
   unmounted() {
     this.onResetClientByDni()
   },
-
-  activated() {
-    console.log('activated')
-  },
-
-  deactivated() {
-    console.log('deactivated')
-  },
 }
 </script>
 

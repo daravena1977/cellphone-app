@@ -142,9 +142,6 @@ export default {
           this.deleteRepairCellphone(repair)
           alert('este tipo de reparacion ya fue ingresado')
         }
-
-
-        console.log('paso 1')
       })
     },
 
