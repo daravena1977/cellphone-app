@@ -107,7 +107,9 @@
     </div>
   </div>
   <ModalWorkOrderDetails @close-modal="closeModal" :openModal="openModal"
-  :dataWorkOrder="dataWorkOrder" />
+  :number-order="searchedOrderNumber" :start-date="startDate" :end-date="endDate"
+  :state="statusSelected"
+  :dataWorkOrder="dataWorkOrder" :is-search-by-number="searchByNumber" :is-search-by-date="searchByDate" :is-search-by-state="searchByState" />
 
 </template>
 
@@ -145,6 +147,10 @@ export default {
       statusOrders: ['ENTREGADO', 'PENDIENTE', 'SIN_SOLUCION', 'ANULADA'],
       openModal: false,
       dataWorkOrder: {},
+      searchByNumber: false,
+      searchByDate: false,
+      searchByState: false,
+      statusSelected: '',
     }
   },
 
@@ -154,7 +160,6 @@ export default {
 
     getWorkOrdersByNumber(numberOrder) {
       this.findWorkOrdersByNumber(parseInt(numberOrder)).then((data) => {
-        console.log(data)
         this.showTable = true
         this.workOrdersSearched = data
       })
@@ -171,6 +176,7 @@ export default {
     },
 
     getWorkOrdersByState($event) {
+      this.statusSelected = $event.target.value
       this.findWorkOrdersByState($event.target.value).then((data) => {
         this.showTable = true
         this.workOrdersSearched = data
@@ -202,6 +208,7 @@ export default {
         this.showOptionForDate = false
         this.showOptionForState = false
         this.searchedOrderNumber = 0
+        this.searchByNumber = true
         this.setFocusInput()
       }
 
@@ -209,12 +216,14 @@ export default {
         this.showOptionForNumber = false
         this.showOptionForDate = true
         this.showOptionForState = false
+        this.searchByDate = true
       }
 
       if (index === 2) {
         this.showOptionForNumber = false
         this.showOptionForDate = false
         this.showOptionForState = true
+        this.searchByState = true
       }
     },
 

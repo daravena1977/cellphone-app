@@ -37,7 +37,7 @@
                                 <i class="fa-regular fa-floppy-disk" style="color: white;"></i>
                             </button>
                             <button @click="saveData = true; editingMode = false; showButtonSave = false;
-                             showAddRepair = false"
+                            showAddRepair = false; handleCategory()"
                                 v-if="showButtonSave" type="button" class="btn btn-danger">
                                 Guardar
                             </button>
@@ -61,6 +61,7 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import bootstrapBundle from 'bootstrap/dist/js/bootstrap.bundle'
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'ModalWorkOrderDetail',
@@ -95,6 +96,41 @@ export default {
         dataWorkOrder: {
             type: Object,
             default: () => { }
+        },
+        
+        isSearchByNumber: {
+            type: Boolean,
+            default: false,
+        },
+
+        isSearchByDate: {
+            type: Boolean,
+            default: false,
+        },
+
+        isSearchByState: {
+            type: Boolean,
+            default: false,
+        },
+
+        numberOrder: {
+            type: Number,
+            default: 0,
+        },
+
+        startDate: {
+            type: String,
+            default: '',
+        },
+
+        endDate: {
+            type: String,
+            default: '',
+        },
+
+        state: {
+            type: String,
+            default: '',
         }
     },
 
@@ -106,9 +142,29 @@ export default {
 
         setSaveData(value) {
             this.saveData = value
+        },
+
+        handleCategory() {
+            console.log('paso por handle category')
+            if (this.isSearchByNumber) {
+                console.log('paso por by number')
+                return this.getTableWorkOrdersByNumber
+            }
+
+            if (this.isSearchByDate) {
+                return this.getTableWorkOrdersByState
+            }
+
+            if (this.isSearchByState) {
+                return this.isSearchByState
+            }
         }
 
     },
+
+    computed: {
+        ...mapGetters('repair', ['getTableWorkOrdersByNumber', 'getTableWorkOrdersByDate', 'getTableWorkOrdersByState'])
+    }
 
 }
 </script>
