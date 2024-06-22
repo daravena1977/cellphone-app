@@ -82,3 +82,7 @@ export const setNewWorkorderRepairCellphone = (state,
 export const setClientById = (state, data) => {
     state.clientById = data
 }
+
+export const setWorkOrderUpdated = (state, data) => {
+    state.workOrderUpdate = data
+}

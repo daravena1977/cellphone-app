@@ -9,7 +9,7 @@
                 </div>
                 <div class="modal-body">
                     <WorkOrder :showAddRepair="showAddRepair" @setSaveData="setSaveData" :editingMode="editingMode" :dataWorkOrder="dataWorkOrder"
-                        :saveData="saveData" />
+                        :saveData="saveData" @updateTable="handleCategory()" />
                 </div>
                 <div class="modal-footer">
                     <div class="input-group flex-nowrap gap-2 justify-content-end">
@@ -37,7 +37,7 @@
                                 <i class="fa-regular fa-floppy-disk" style="color: white;"></i>
                             </button>
                             <button @click="saveData = true; editingMode = false; showButtonSave = false;
-                            showAddRepair = false; handleCategory()"
+                            showAddRepair = false"
                                 v-if="showButtonSave" type="button" class="btn btn-danger">
                                 Guardar
                             </button>
@@ -46,7 +46,7 @@
                             <button @click="$emit('close-modal')" type="button" class="btn" data-bs-dismiss="modal" style="background-color: #2d6a4f;">
                                 <i class="fa-solid fa-door-open" style="color: white;"></i>
                             </button>
-                            <button @click="$emit('close-modal')" type="button" class="btn btn-secondary"
+                            <button @click="$emit('close-modal'); saveData = false" type="button" class="btn btn-secondary"
                                 data-bs-dismiss="modal">
                                 Cerrar
                             </button>
@@ -61,7 +61,7 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import bootstrapBundle from 'bootstrap/dist/js/bootstrap.bundle'
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'ModalWorkOrderDetail',
@@ -135,6 +135,7 @@ export default {
     },
 
     methods: {
+        ...mapActions('repair', ['findWorkOrdersByNumber']),
         onOpenModal() {
             let modal = new bootstrapBundle.Modal(document.getElementById('myModal'))
             modal.show()
@@ -147,8 +148,10 @@ export default {
         handleCategory() {
             console.log('paso por handle category')
             if (this.isSearchByNumber) {
-                console.log('paso por by number')
-                return this.getTableWorkOrdersByNumber
+                this.findWorkOrdersByNumber(this.numberOrder)
+                    .then((data) => {
+                        console.log('data grabada', data)
+                    })
             }
 
             if (this.isSearchByDate) {

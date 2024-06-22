@@ -284,6 +284,7 @@ export default {
 
     saveData( value ) {
       if ( value ) {
+        console.log('envio a onsave data')
         this.onSaveData()
       }
     }
@@ -402,8 +403,10 @@ export default {
     },    
 
     onSaveData() {
+      console.log(this.dataOrder, 'esta es la data enviada')
       this.updateWorkOrder( this.dataOrder ).then(() => {
         this.loadClientByDni( this.getDniCurrentClient )
+        this.$emit('updateTable')
         this.$emit( 'setSaveData', false )
       })
     },

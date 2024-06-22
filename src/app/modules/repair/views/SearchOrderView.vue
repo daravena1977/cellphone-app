@@ -42,7 +42,7 @@
           @openModalWorkOrder="setShowModal"
           v-if="showTable && getTableWorkOrdersByNumber.length > 0"
           class="w-75 m-auto"
-          :workOrders="getTableWorkOrdersByNumber"
+          :workOrders="tableWorkOrdersByNumber"
         />
       </div>
     </div>
@@ -121,9 +121,7 @@ export default {
   name: 'SearchOrder',
 
   components: {
-    TableWorkOrders: defineAsyncComponent(() =>
-      import('@/app/shared/TableWorkOrders')
-    ),
+    TableWorkOrders: defineAsyncComponent(() => import('@/app/shared/TableWorkOrders')),
     ModalWorkOrderDetails: defineAsyncComponent(() => import('@/app/shared/ModalWorkOrderDetail.vue')),
   },
 
@@ -250,7 +248,21 @@ export default {
       'getTableWorkOrdersByDate',
       'getTableWorkOrdersByState'
     ]),
+
+    tableWorkOrdersByNumber() {
+      console.log(this.getTableWorkOrdersByNumber, 'pasa por el getter')
+      return this.getTableWorkOrdersByNumber
+    }
   },
+
+  mounted() {
+    console.log('se a activado searchOrder')
+  },
+  
+
+  activated() {
+    console.log('se a activado searchOrder')
+  }
 }
 </script>
 

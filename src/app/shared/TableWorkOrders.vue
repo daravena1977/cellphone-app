@@ -64,6 +64,8 @@ import moment from 'moment'
 export default {
   name: 'TableWorkOrders',
 
+  emits: ['openModalWorkOrder', 'sendDataWorkOrdersRepairs'],
+
   data() {
     return {
       show: true,
