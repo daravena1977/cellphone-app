@@ -55,7 +55,7 @@
         >
           <label class="form-label">Fecha desde</label>
           <input
-            v-model="startDate"
+            v-model="paramsDate.startDate"
             class="form-control w-25"
             type="date"
             name=""
@@ -63,14 +63,14 @@
           />
           <label class="form-label">Fecha hasta</label>
           <input
-            v-model="endDate"
+            v-model="paramsDate.endDate"
             class="form-control w-25"
             type="date"
             name=""
             id=""
           />
           <button
-            @click.prevent="getWorkOrdersByDate(startDate, endDate)"
+            @click.prevent="getWorkOrdersByDate(paramsDate.startDate, paramsDate.endDate)"
             class="btn btn-search"
           >
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -106,9 +106,7 @@
       <TableWorkOrders @sendDataWorkOrdersRepairs="setDataWorkOrder" @openModalWorkOrder="setShowModal" v-if="showTable && getTableWorkOrdersByState.length > 0" class="w-75 m-0" :workOrders="getTableWorkOrdersByState"/>  
     </div>
   </div>
-  <ModalWorkOrderDetails @close-modal="closeModal" :openModal="openModal"
-  :number-order="searchedOrderNumber" :start-date="startDate" :end-date="endDate"
-  :state="statusSelected"
+  <ModalWorkOrderDetails @close-modal="closeModal" :openModal="openModal" :params-date="paramsDate" :number-order="searchedOrderNumber" :state="statusSelected"
   :dataWorkOrder="dataWorkOrder" :is-search-by-number="searchByNumber" :is-search-by-date="searchByDate" :is-search-by-state="searchByState" />
 
 </template>
@@ -207,6 +205,8 @@ export default {
         this.showOptionForState = false
         this.searchedOrderNumber = 0
         this.searchByNumber = true
+        this.searchByDate = false
+        this.searchByState = false
         this.setFocusInput()
       }
 
@@ -215,6 +215,8 @@ export default {
         this.showOptionForDate = true
         this.showOptionForState = false
         this.searchByDate = true
+        this.searchByNumber = false
+        this.searchByState = false
       }
 
       if (index === 2) {
@@ -222,6 +224,8 @@ export default {
         this.showOptionForDate = false
         this.showOptionForState = true
         this.searchByState = true
+        this.searchByNumber = false 
+        this.searchByDate = false
       }
     },
 

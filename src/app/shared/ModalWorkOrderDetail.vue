@@ -118,14 +118,18 @@ export default {
             default: 0,
         },
 
-        startDate: {
-            type: String,
-            default: '',
-        },
-
-        endDate: {
-            type: String,
-            default: '',
+        paramsDate: {
+            type: Object,
+            properties: {
+                startDate: {
+                    type: String,
+                    default: '',
+                },
+                endDate: {
+                    type: String,
+                    default: '',
+                }
+            }
         },
 
         state: {
@@ -135,7 +139,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('repair', ['findWorkOrdersByNumber']),
+        ...mapActions('repair', ['findWorkOrdersByNumber', 'findWorkOrdersByDate', 'findWorkOrdersByState']),
         onOpenModal() {
             let modal = new bootstrapBundle.Modal(document.getElementById('myModal'))
             modal.show()
@@ -146,8 +150,8 @@ export default {
         },
 
         handleCategory() {
-            console.log('paso por handle category')
             if (this.isSearchByNumber) {
+                console.log('paso por handle category by number')
                 this.findWorkOrdersByNumber(this.numberOrder)
                     .then((data) => {
                         console.log('data grabada', data)
@@ -155,11 +159,15 @@ export default {
             }
 
             if (this.isSearchByDate) {
-                return this.getTableWorkOrdersByState
+                console.log('paso por handleCategory by date')
+                this.findWorkOrdersByDate(this.paramsDate)
+                    .then((data) => console.log('data grabada by date', data))
             }
 
             if (this.isSearchByState) {
-                return this.isSearchByState
+                console.log('paso por handleState by state')
+                this.findWorkOrdersByState(this.state)
+                    .then((data) => console.log('data grabada by state', data))
             }
         }
 
