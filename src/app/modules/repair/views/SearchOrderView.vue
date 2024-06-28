@@ -254,19 +254,9 @@ export default {
     ]),
 
     tableWorkOrdersByNumber() {
-      console.log(this.getTableWorkOrdersByNumber, 'pasa por el getter')
       return this.getTableWorkOrdersByNumber
     }
   },
-
-  mounted() {
-    console.log('se a activado searchOrder')
-  },
-  
-
-  activated() {
-    console.log('se a activado searchOrder')
-  }
 }
 </script>
 

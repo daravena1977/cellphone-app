@@ -19,8 +19,8 @@ class AuthService {
         localStorage.removeItem('user')
     }
 
-    register(user) {
-        return cellPhoneApi.post('/signup', user)
+    async register(user) {
+        return await cellPhoneApi.post('/signup', user)
     }
 
 

@@ -35,3 +35,8 @@ export const registerFailure = ( state ) => {
     state.initialState.status.loggedIn = false
 
 }
+
+export const refreshToken = ( state, accessToken ) => {
+    state.status.loggedIn = true
+    state.user = {...state.user, accessToken: accessToken}
+}

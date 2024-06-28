@@ -28,7 +28,6 @@ export const logout = ({ commit }) => {
 
 export const register = ({ commit }, newUser) => {
 
-
     return AuthService.register(newUser)
         .then(
             response => {
@@ -40,7 +39,9 @@ export const register = ({ commit }, newUser) => {
                 return Promise.reject(error);
             }
         )
+}
 
-
+export const refreshToken = ({ commit }, accesToken) => {
+    commit('refreshToken', accesToken)
 }
 

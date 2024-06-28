@@ -151,23 +151,15 @@ export default {
 
         handleCategory() {
             if (this.isSearchByNumber) {
-                console.log('paso por handle category by number')
                 this.findWorkOrdersByNumber(this.numberOrder)
-                    .then((data) => {
-                        console.log('data grabada', data)
-                    })
             }
 
             if (this.isSearchByDate) {
-                console.log('paso por handleCategory by date')
                 this.findWorkOrdersByDate(this.paramsDate)
-                    .then((data) => console.log('data grabada by date', data))
             }
 
             if (this.isSearchByState) {
-                console.log('paso por handleState by state')
                 this.findWorkOrdersByState(this.state)
-                    .then((data) => console.log('data grabada by state', data))
             }
         }
 
