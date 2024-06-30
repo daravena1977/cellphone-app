@@ -131,7 +131,8 @@ export default {
     ...mapMutations('repair', ['resetRepairsTable', 'deleteRepairCellphone']),
 
     getRepair(repair) {
-      this.loadRepairCellphone(repair).then(() => {
+      this.loadRepairCellphone(repair)
+        .then(() => {
         /* Esto es para eliminar los registros repetidos y no permitir ingresar otro igual */
         const arrayCompare = new Set()
         this.repairs.forEach((repair) =>
@@ -142,6 +143,9 @@ export default {
           this.deleteRepairCellphone(repair)
           alert('este tipo de reparacion ya fue ingresado')
         }
+        })
+        .catch( err => {
+        console.log(err, 'error buscado')
       })
     },
 

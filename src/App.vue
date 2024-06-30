@@ -8,6 +8,28 @@
   </div>
 </template>
 
+<script>
+import { mapActions } from 'vuex'
+import EventBus from '@/app/common/EventBus'
+
+
+export default {
+  methods: {
+    ...mapActions('auth', ['logout']),
+    logOut() {
+      this.logout()
+      this.$router.push('/login')
+    }
+  },
+  mounted() {
+    EventBus.on('logout', () => this.logOut())
+  },
+  beforeUnmount() {
+    EventBus.remove('logout')
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

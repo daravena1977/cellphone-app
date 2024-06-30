@@ -19,6 +19,7 @@ export const loadRepairCellphone = async ({ commit }, repair) => {
     // }
 
     const { data } = await cellPhoneApi.post('/repaircellphone', repair)
+        .catch((err) => console.log(err, 'error repair'))
 
     commit('setRepairCellphone', data)
 

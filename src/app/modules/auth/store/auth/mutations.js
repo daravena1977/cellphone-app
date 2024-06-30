@@ -20,7 +20,8 @@ export const loginFailure = ( state ) => {
 export const logout = ( state ) => {
 
     state.initialState.status.loggedIn = false
-    state.user = null
+    state.initialState.user = null
+    console.log('se realizo el logout')
 
 }
 
@@ -37,6 +38,7 @@ export const registerFailure = ( state ) => {
 }
 
 export const refreshToken = ( state, accessToken ) => {
-    state.status.loggedIn = true
-    state.user = {...state.user, accessToken: accessToken}
+    state.initialState.status.loggedIn = true
+    state.initialState.user = {...state.user, accessToken: accessToken}
+    console.log('actualice el token con refresh')
 }

@@ -48,7 +48,6 @@ export const createModel = async ({ commit }, model) => {
 
 export const loadTypesRepairs = async ({ commit }) => {
     const { data } = await cellPhoneApi.get('/repairs')
-    console.log(data);
     commit('setTypesRepairs', data)
 }
 

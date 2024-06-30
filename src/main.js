@@ -11,6 +11,8 @@ import './styles/styles.scss'
 
 import setupInterceptors from '@/app/services/setupinterceptors'
 
+
+
 setupInterceptors(store)
 
 createApp(App)

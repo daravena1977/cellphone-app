@@ -1,4 +1,5 @@
 import cellPhoneApi from '@/api/cellPhoneApi'
+import tokenService from './token-service'
 
 class AuthService {
     async login(user){
@@ -7,8 +8,7 @@ class AuthService {
             .then(response => {
                 const { data } = response
                 if (data.accessToken){
-                    localStorage.setItem('user', JSON.stringify(data))
-                    console.log('localStorage.setItem')
+                    tokenService.setUser(response.data)
                 }
 
                 return data
@@ -16,14 +16,12 @@ class AuthService {
     }
 
     logout() {
-        localStorage.removeItem('user')
+        tokenService.removeUser()
     }
 
     async register(user) {
         return await cellPhoneApi.post('/signup', user)
     }
-
-
 }
 
 export default new AuthService()
