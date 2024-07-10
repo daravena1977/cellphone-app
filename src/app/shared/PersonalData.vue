@@ -157,7 +157,7 @@ export default {
         description: '',
         stateOrder: '',
       },
-      statusOrders: ['ENTREGADO', 'PENDIENTE', 'SIN_SOLUCION', 'ANULADA'],
+      statusOrders: ['ENTREGADO', 'PENDIENTE', 'REPARADO', 'SIN_SOLUCION', 'ANULADA'],
       idDisabled: this.isDisabledProp,
       clientExists: false,
       savedOrder: false,

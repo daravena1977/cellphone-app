@@ -1,5 +1,7 @@
 import cellPhoneApi from '@/api/cellPhoneApi'
 import TokenService from './token-service'
+import router from '@/app/router/index'
+
 
 const setup = (store) => {
     cellPhoneApi.interceptors.request.use(
@@ -33,7 +35,8 @@ const setup = (store) => {
                         console.log('paso por el refresh')
                         console.log(store)
                         
-                        const rs = await cellPhoneApi.post('/refreshtoken', {refreshToken: TokenService.getLocalRefreshToken()})
+                        const rs = await cellPhoneApi.post('/refreshtoken', 
+                            {refreshToken: TokenService.getLocalRefreshToken()})
 
 
                         const { accessToken } = rs.data
@@ -43,7 +46,8 @@ const setup = (store) => {
                         return cellPhoneApi(originalConfig)
                     } catch (_error) {
                         console.log('Refresh token failed', _error)
-                        await store.dispatch('auth/logout')
+                        router.push({name: 'login'})
+                        //await store.dispatch('auth/logout')
                         return Promise.reject(_error)
                     }
                 }

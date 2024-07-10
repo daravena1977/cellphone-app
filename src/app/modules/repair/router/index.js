@@ -1,9 +1,14 @@
 
 export default {
 
+    path: '/repair-module',
     name: 'repair-module',
     component: () => import(/* webpackChunkName: "repair" */ '@/app/modules/repair/layouts/RepairLayout'),
     children: [
+        {
+            path: '',
+            redirect: {name: 'workorder'}
+        },
         {   
             path: 'workorder',
             name: 'workorder',

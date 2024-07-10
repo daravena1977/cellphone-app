@@ -39,10 +39,18 @@ export default {
 
 li {
     list-style-type: none;
+    box-shadow: 0px 1px 1px 1.2px;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
 }
 
 a {
     text-decoration: none;
-    color: #f8f9fa;
+    color: #f8f9fa;    
+}
+
+.router-link-active {
+    color: #e74c3c;
 }
 </style>

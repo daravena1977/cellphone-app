@@ -14,16 +14,15 @@ const routes = [
   },
   {
     path: '/auth',
+    name: 'auth',
     ...authRouter
   },
   {
     path: '/setup',
     ...setupRouter
   },
-  {
-    path: '/repair-module',
-    ...repairRouter,
-  }
+  repairRouter,
+  
 ]
 
 const router = createRouter({

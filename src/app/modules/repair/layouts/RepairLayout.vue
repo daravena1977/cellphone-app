@@ -21,7 +21,11 @@ export default {
           { to: 'search-order', name: 'Consultar Orden'}
         ]
       }
-    }   
+    },
+    
+    activated() {
+      this.$router.push({name: 'workorder'})
+    }
 
 }
 </script>

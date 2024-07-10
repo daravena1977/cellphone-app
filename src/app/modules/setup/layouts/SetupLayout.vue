@@ -30,6 +30,10 @@ export default {
     },
     created() {
         this.loadTypesRepairs()
+    },
+
+    activated() {
+        this.$router.push({name: 'brand'})
     }
 
 

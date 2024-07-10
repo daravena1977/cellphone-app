@@ -24,7 +24,7 @@ export default {
 
     data() {
         return {
-            statusOrders: ['ENTREGADO', 'PENDIENTE', 'SIN_SOLUCION', 'ANULADA'],
+            statusOrders: ['ENTREGADO', 'PENDIENTE', 'REPARADO', 'SIN_SOLUCION', 'ANULADA'],
             stateOrderRecieved: this.stateOrderRecievedProp
         }
     },

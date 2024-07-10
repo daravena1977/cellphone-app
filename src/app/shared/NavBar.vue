@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <router-link :to="{ name: 'workorder'}" class="nav-link">Reparaciones</router-link>
+          <router-link :to="{ name: 'repair-module'}" class="nav-link">Reparaciones</router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Repuestos</a>
@@ -18,7 +18,7 @@
           <a class="nav-link" href="#">Accesorios</a>
         </li>
         <li class="nav-item">
-          <router-link :to="{name: 'brand'}" class="nav-link">Configuracion</router-link>
+          <router-link :to="{name: 'setup'}" class="nav-link">Configuracion</router-link>
         </li>
         
       </ul>
