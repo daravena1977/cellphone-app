@@ -33,8 +33,14 @@
           ></button>
         </div>
         <div class="modal-body">
-          <TableWorkOrders :workOrders="workOrdersProps" />
+          <TableWorkOrders :workOrders="workOrdersProps" 
+          @sendDataWorkOrdersRepairs="setDataWorkOrder" @openModalWorkOrder="handleModal" />
         </div>
+
+        <!-- Modal WorkOrderDetail -->
+          <ModalWorkOrderDetails @close-modal="closeModal" :openModal="openModal" :dataWorkOrder="dataWorkOrder"/>
+
+        <!-- footer Modal WorkORder -->
         <div class="modal-footer">
           <button
             type="button"
@@ -58,11 +64,14 @@ export default {
     TableWorkOrders: defineAsyncComponent(() =>
       import('@/app/shared/TableWorkOrders')
     ),
+    ModalWorkOrderDetails: defineAsyncComponent(() => import('@/app/shared/ModalWorkOrderDetail'))
   },
 
   data() {
     return {
       workOrders: this.workOrdersProps,
+      openModal: false,
+      dataWorkOrder: {},
     }
   },
 
@@ -72,6 +81,21 @@ export default {
       required: true,
     },
   },
+
+  methods: {
+    handleModal() {
+      this.openModal = true
+      console.log('se llamo al modal')
+    },
+
+    setDataWorkOrder(data) {
+      this.dataWorkOrder = data
+    },
+
+    closeModal() {
+      this.openModal = false
+    }
+  }
 }
 </script>
 
