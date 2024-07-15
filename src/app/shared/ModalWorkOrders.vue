@@ -33,12 +33,19 @@
           ></button>
         </div>
         <div class="modal-body">
-          <TableWorkOrders :workOrders="workOrdersProps" 
-          @sendDataWorkOrdersRepairs="setDataWorkOrder" @openModalWorkOrder="handleModal" />
+          <TableWorkOrders
+            :workOrders="workOrdersProps"
+            @sendDataWorkOrdersRepairs="setDataWorkOrder"
+            @openModalWorkOrder="handleModal"
+          />
         </div>
 
         <!-- Modal WorkOrderDetail -->
-          <ModalWorkOrderDetails @close-modal="closeModal" :openModal="openModal" :dataWorkOrder="dataWorkOrder"/>
+        <ModalWorkOrderDetails
+          @close-modal="closeModal"
+          :openModal="openModal"
+          :dataWorkOrder="dataWorkOrder"
+        />
 
         <!-- footer Modal WorkORder -->
         <div class="modal-footer">
@@ -56,7 +63,7 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent } from 'vue';
 
 export default {
   name: 'ModalWorkOrders',
@@ -64,7 +71,9 @@ export default {
     TableWorkOrders: defineAsyncComponent(() =>
       import('@/app/shared/TableWorkOrders')
     ),
-    ModalWorkOrderDetails: defineAsyncComponent(() => import('@/app/shared/ModalWorkOrderDetail'))
+    ModalWorkOrderDetails: defineAsyncComponent(() =>
+      import('@/app/shared/ModalWorkOrderDetail')
+    ),
   },
 
   data() {
@@ -72,7 +81,7 @@ export default {
       workOrders: this.workOrdersProps,
       openModal: false,
       dataWorkOrder: {},
-    }
+    };
   },
 
   props: {
@@ -84,20 +93,19 @@ export default {
 
   methods: {
     handleModal() {
-      this.openModal = true
-      console.log('se llamo al modal')
+      this.openModal = true;
+      console.log('se llamo al modal');
     },
 
     setDataWorkOrder(data) {
-      this.dataWorkOrder = data
+      this.dataWorkOrder = data;
     },
 
     closeModal() {
-      this.openModal = false
-    }
-  }
-}
+      this.openModal = false;
+    },
+  },
+};
 </script>
 
-<style>
-</style>
+<style></style>

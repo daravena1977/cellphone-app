@@ -1,7 +1,7 @@
 <template>
   <div class="container-navbar">
     <nav class="navbar bg-primary navbar-expand-lg">
-  <div class="container d-flex align-items-end">
+  <div class="container-fluid d-flex align-items-end">
     <a class="navbar-brand" href="#"><span>CellApp</span></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -19,6 +19,9 @@
         </li>
         <li class="nav-item">
           <router-link :to="{name: 'setup'}" class="nav-link">Configuracion</router-link>
+        </li>
+        <li class="nav-item logout">
+          <router-link :to="{name: 'login'}" class="nav-link">Cerrar sesión</router-link>
         </li>
         
       </ul>
@@ -65,5 +68,14 @@ nav a.router-link-active {
 
 span {
   color: #e74c3c;
+}
+
+.logout {
+  background-color: #e74c3c;
+  border-radius: 0.5rem;
+  box-shadow: 0px 1px 1px 2px rgba($color: #0b0b0b, $alpha: 1.0);
+  width: 8rem;
+  text-align: center;
+  margin-left: 2rem;
 }
 </style>

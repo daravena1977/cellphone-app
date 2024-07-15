@@ -51,7 +51,8 @@ export default {
         user: {
           email: '',
           password: ''
-        }
+        },
+        errormessage: '',
       }
     },
 
@@ -59,6 +60,8 @@ export default {
       ...mapActions('auth', (['login'])),
       onLogin() {
         this.login(this.user)
+          .then(() => this.$router.push({name: 'workorder'}))
+          .catch(err => console.log(err))
 
       }
       
