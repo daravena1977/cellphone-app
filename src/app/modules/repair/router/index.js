@@ -7,6 +7,7 @@ export default {
     children: [
         {
             path: '',
+            name: 'repair-module',
             redirect: {name: 'workorder'}
         },
         {   
