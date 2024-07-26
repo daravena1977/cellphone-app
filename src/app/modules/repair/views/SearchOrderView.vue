@@ -140,7 +140,7 @@ export default {
         startDate: '',
         endDate: '',
       },
-      statusOrders: ['ENTREGADO', 'PENDIENTE', 'SIN_SOLUCION', 'ANULADA'],
+      statusOrders: ['ENTREGADO', 'PENDIENTE', 'REPARADO', 'SIN_SOLUCION', 'ANULADA'],
       openModal: false,
       dataWorkOrder: {},
       searchByNumber: false,

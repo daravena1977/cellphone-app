@@ -1,12 +1,12 @@
 <template>
 
-  <v-form as="form" @submit="onSubmit" :validation-schema="schema" v-slot="{ errors }"
+  <v-form as="form" @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, validateField }"
     class="login-container p-5 col-10 col-sm-8 col-lg-3 m-auto">
     <h2>Login</h2>
     <!-- Email input -->
     <div class="form-outline mb-4">
       <Field v-model="user.email" name="email" placeholder="Email" type="email" id="email" class="form-control"
-        :class="{ 'is-invalid': errors.email }" />
+        :class="{ 'is-invalid': errors.email }" @input="() => validateField('email')" />
       <div class="invalid-feedback">{{ errors.email }}</div>
       <label class="form-label" for="form2Example1"></label>
     </div>
@@ -14,7 +14,7 @@
     <!-- Password input -->
     <div class="form-outline mb-4">
       <Field v-model="user.password" name="password" placeholder="Password" type="password" id="form2Example2" class="form-control"
-        :class="{ 'is-invalid': errors.password }" />
+        :class="{ 'is-invalid': errors.password }"  @input="() => validateField('password')"/>
       <div class="invalid-feedback">{{ errors.password }}</div>
       <label class="form-label" for="form2Example2"></label>
     </div>
@@ -61,9 +61,7 @@ export default {
   },
 
 
-  data() {
-
-
+  data() {  
     return {
       user: {
         email: '',
@@ -74,20 +72,15 @@ export default {
           .email('Ingrese un correo electrónico válido')
           .required('El correo electrónico es obligatorio'),
         password: Yup.string()
-          .min(6, 'La contraseña debe tener al menos 6 caracteres')
-          .required('La contraseña es obligatoria'),
+        .required('La contraseña es obligatoria')
+        .min(6, 'La contraseña debe tener al menos 6 caracteres')
       }),
     }
   },
 
   methods: {
     ...mapActions('auth', (['login'])),
-    /* onLogin() {
-      this.login(this.user)
-        .then(() => this.$router.push({name: 'workorder'}))
-        .catch(err => console.log(err))
-
-    } */
+    
 
     onSubmit(values) {
       this.login(this.user)
