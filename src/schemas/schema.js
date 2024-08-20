@@ -14,6 +14,13 @@ export const userSchema = Yup.object().shape({
     .required('La dirección es obligatoria'),
   email: Yup.string()
     .email('Debe ingresar un correo electrónico válido')
-    .required('El correo electrónico es obligatorio')
+    .required('El correo electrónico es obligatorio'),
+  phone: Yup.string()
+    .required('El número de teléfono es obligatorio')
+    .matches(/^\+56 9\d{8}$/, 'El número de teléfono debe estar en el formato +56 9 ########.'),
+  deliverDate: Yup.string()
+    .required('La fecha de entrega es requerida'),
+  state: Yup.string()
+    .required('El estado es obligatorio')
 
 });

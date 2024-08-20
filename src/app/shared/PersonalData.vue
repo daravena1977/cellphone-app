@@ -126,33 +126,55 @@
 
       <div class="data input-group-sm">
         <label for="phone">Teléfono</label>
-        <input
+        <div class="d-flex flex-column input-group-sm w-100">
+          <Field
+          name="phone"
           v-model="orderData.phoneNumber"
           id="phone"
           class="form-control"
           type="tel"
           placeholder="Telefono"
           :disabled="idDisabled"
+          :class="{ 'is-invalid': errors.phone }"
+
         />
+
+        <div class="invalid-feedback">{{ errors.phone }}</div>
+        </div>
+        
+
       </div>
 
       <div v-if="showField" class="data input-group-sm">
         <label for="dateDelivery">Fecha entrega</label>
-        <input
+        <div class="d-flex flex-column input-group-sm w-100">
+          <Field
+          name="deliverDate"
           v-model="orderData.deliverDate"
           id="dateDelivery"
           class="form-control"
           type="date"
           placeholder="fecha entrega"
+          :class="{ 'is-invalid': errors.deliverDate }"
+
         />
+        <div class="invalid-feedback">{{ errors.deliverDate }}</div>
+        </div>
+        
+
       </div>
 
       <div v-if="showField" class="data">
         <label for="state">Estado</label>
-        <select
+        <div class="d-flex flex-column input-group-sm w-100">
+          <Field
+          as="select"
+          name="state"
           id="state"
           @change="setStatus"
           class="form-select form-select-sm"
+          :class="{ 'is-invalid': errors.state }"
+
         >
           <option :selected="resetStatus">Seleccione estado</option>
           <option
@@ -162,7 +184,11 @@
           >
             {{ status }}
           </option>
-        </select>
+        </Field>
+        <div class="invalid-feedback">{{ errors.state }}</div>
+        </div>
+       
+
       </div>
     </fieldset>
   </v-form>
