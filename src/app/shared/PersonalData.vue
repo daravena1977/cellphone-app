@@ -1,5 +1,9 @@
 <template>
-  <form class="form-control contenedor">
+  <v-form
+    class="form-control contenedor"
+    :validation-schema="validationSchema"
+    v-slot="{ errors }"
+  >
     <fieldset>
       <legend>{{ lengendProp }}</legend>
       <hr />
@@ -28,65 +32,96 @@
 
       <div class="data input-group-sm">
         <label for="dni">DNI</label>
-        <input
-          @input="$emit('send-dni', orderData.dni)"
-          @keypress.enter.prevent="searchClientByDni(orderData.dni)"
-          v-model="orderData.dni"
-          id="dni"
-          class="form-control"
-          @focusout="searchClientByDni(orderData.dni)"
-          type="text"
-          placeholder="Dni"
-          ref="inputDni"
-        />
+        <div class="d-flex flex-column input-group-sm w-100">
+          <Field
+            name="dni"
+            @input="$emit('send-dni', orderData.dni)"
+            @keypress.enter.prevent="searchClientByDni(orderData.dni)"
+            v-model="orderData.dni"
+            id="dni"
+            class="form-control"
+            @focusout="searchClientByDni(orderData.dni)"
+            type="text"
+            placeholder="Dni"
+            ref="inputDni"
+            :class="{ 'is-invalid': errors.dni }"
+          />
+          <div class="invalid-feedback">{{ errors.dni }}</div>
+        </div>
       </div>
 
       <div class="data input-group-sm">
         <label for="name">Nombre</label>
-        <input
-          v-model="orderData.firstName"
-          id="name"
-          class="form-control"
-          type="text"
-          placeholder="Nombre"
-          :disabled="idDisabled"
-          ref="myInput"
-        />
+        <div class="d-flex flex-column input-group-sm w-100">
+          <Field name="firstName">
+            <input
+              v-model="orderData.firstName"
+              id="firstName"
+              class="form-control"
+              type="text"
+              placeholder="Nombre"
+              :disabled="idDisabled"
+              ref="myInput"
+              :class="{ 'is-invalid': errors.firstName }"
+            />
+          </Field>
+
+          <div class="invalid-feedback">{{ errors.firstName }}</div>
+        </div>
       </div>
 
       <div class="data input-group-sm">
         <label for="lastName">Apellido</label>
-        <input
-          v-model="orderData.lastName"
-          id="lastName"
-          class="form-control"
-          type="text"
-          placeholder="Apellido"
-          :disabled="idDisabled"
-        />
+        <div class="d-flex flex-column input-group-sm w-100">
+          <Field
+            name="lastName"
+            v-model="orderData.lastName"
+            id="lastName"
+            class="form-control"
+            type="text"
+            placeholder="Apellido"
+            :disabled="idDisabled"
+            :class="{ 'is-invalid': errors.lastName }"
+          />
+
+          <div class="invalid-feedback">{{ errors.lastName }}</div>
+        </div>
       </div>
 
       <div class="data input-group-sm">
         <label for="address">Dirección</label>
-        <input
+        <div class="d-flex flex-column input-group-sm w-100">
+          <Field
+          name="address"
           v-model="orderData.address"
           id="address"
           class="form-control"
           type="text"
           placeholder="Dirección"
           :disabled="idDisabled"
+          :class="{ 'is-invalid': errors.address }"
         />
+        <div class="invalid-feedback">{{ errors.address }}</div>
+        </div>
+        
       </div>
       <div class="data input-group-sm">
         <label for="email">E-mail</label>
-        <input
+        <div class="d-flex flex-column input-group-sm w-100">
+          <Field
+          name="email"
           v-model="orderData.email"
           id="email"
           class="form-control"
           type="email"
           placeholder="Email"
           :disabled="idDisabled"
+          :class="{ 'is-invalid': errors.email }"
         />
+        <div class="invalid-feedback">{{ errors.email }}</div>
+        </div>
+        
+
       </div>
 
       <div class="data input-group-sm">
@@ -130,15 +165,22 @@
         </select>
       </div>
     </fieldset>
-  </form>
+  </v-form>
 </template>
 
 <script>
-import moment from 'moment'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import moment from 'moment';
+import { Form, Field } from 'vee-validate';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+
+import { userSchema } from '@/schemas/schema';
 
 export default {
   name: 'PersonalData',
+  components: {
+    VForm: Form,
+    Field,
+  },
 
   emits: ['form-data', 'sendClientExists', 'setStatus', 'send-dni'],
 
@@ -157,12 +199,19 @@ export default {
         description: '',
         stateOrder: '',
       },
-      statusOrders: ['ENTREGADO', 'PENDIENTE', 'REPARADO', 'SIN_SOLUCION', 'ANULADA'],
+      validationSchema: userSchema,
+      statusOrders: [
+        'ENTREGADO',
+        'PENDIENTE',
+        'REPARADO',
+        'SIN_SOLUCION',
+        'ANULADA',
+      ],
       idDisabled: this.isDisabledProp,
       clientExists: false,
       savedOrder: false,
       actualDate: new Date(),
-    }
+    };
   },
 
   props: {
@@ -197,25 +246,25 @@ export default {
     focusInputDni: {
       type: Boolean,
       default: false,
-    }
+    },
   },
 
   watch: {
     saved(value) {
       if (value) {
-        console.log(value, 'saved')
-        this.orderData = {}
-        this.orderData.number = 0
+        console.log(value, 'saved');
+        this.orderData = {};
+        this.orderData.number = 0;
         this.orderData.creationDate = moment(this.actualDate).format(
           'YYYY-MM-DD'
-        )
-        this.resetDataOrderState()
-        this.clientExists = false
-        this.idDisabled = false
+        );
+        this.resetDataOrderState();
+        this.clientExists = false;
+        this.idDisabled = false;
       }
     },
     correlative(value) {
-      this.orderData.number = value
+      this.orderData.number = value;
     },
     /* isDisabledProp(value) {
         if (value) {
@@ -224,21 +273,21 @@ export default {
       } */
     resetFormFromClientView(value) {
       if (value) {
-        this.orderData.firstName = ''
-        this.orderData.lastName = ''
-        this.orderData.address = ''
-        this.orderData.email = ''
-        this.orderData.phoneNumber = ''
-        this.resetClientByDni
+        this.orderData.firstName = '';
+        this.orderData.lastName = '';
+        this.orderData.address = '';
+        this.orderData.email = '';
+        this.orderData.phoneNumber = '';
+        this.resetClientByDni;
       }
     },
     focusInputDni(value) {
       if (value) {
         setTimeout(() => {
-          this.$refs.inputDni.focus()
-        },0)
+          this.$refs.inputDni.focus();
+        }, 0);
       }
-    }
+    },
   },
 
   methods: {
@@ -246,50 +295,50 @@ export default {
     ...mapMutations('repair', ['resetDataOrder', 'resetClientByDni']),
 
     setStatus($event) {
-      this.orderData.stateOrder = $event.target.value
-      this.$emit('form-data', this.orderData, this.savedOrder)
+      this.orderData.stateOrder = $event.target.value;
+      this.$emit('form-data', this.orderData, this.savedOrder);
     },
 
     resetDataOrderState() {
-      this.resetDataOrder()
+      this.resetDataOrder();
     },
 
     searchClientByDni(dni) {
       if (dni === '') {
-        this.$emit('sendClientExists', this.clientExists)
-        return
+        this.$emit('sendClientExists', this.clientExists);
+        return;
       }
-      
+
       this.loadClientByDni(dni)
         .then((data) => {
-          this.orderData.firstName = data.firstName
-          this.orderData.lastName = data.lastName
-          this.orderData.address = data.address
-          this.orderData.email = data.email
-          this.orderData.description = ''
-          this.orderData.phoneNumber = data.phoneNumber
-          this.idDisabled = true
-          this.clientExists = true
-          this.$emit('sendClientExists', this.clientExists)
+          this.orderData.firstName = data.firstName;
+          this.orderData.lastName = data.lastName;
+          this.orderData.address = data.address;
+          this.orderData.email = data.email;
+          this.orderData.description = '';
+          this.orderData.phoneNumber = data.phoneNumber;
+          this.idDisabled = true;
+          this.clientExists = true;
+          this.$emit('sendClientExists', this.clientExists);
         })
         .catch((err) => {
-          console.log(err)
-          this.orderData.firstName = ''
-          this.orderData.lastName = ''
-          this.orderData.address = ''
-          this.orderData.email = ''
-          this.orderData.phoneNumber = ''
-          this.idDisabled = false
-          this.clientExists = false
-          this.$emit('sendClientExists', this.clientExists)
+          console.log(err);
+          this.orderData.firstName = '';
+          this.orderData.lastName = '';
+          this.orderData.address = '';
+          this.orderData.email = '';
+          this.orderData.phoneNumber = '';
+          this.idDisabled = false;
+          this.clientExists = false;
+          this.$emit('sendClientExists', this.clientExists);
           this.$nextTick(() => {
-            this.$refs.myInput.focus()
-          })
-        })
+            this.$refs.myInput.focus();
+          });
+        });
     },
 
     onResetClientByDni() {
-      this.resetClientByDni()
+      this.resetClientByDni();
     },
   },
 
@@ -298,10 +347,9 @@ export default {
   },
 
   mounted() {
-    this.orderData.creationDate = moment(this.actualDate)
-    .format('YYYY-MM-DD')
+    this.orderData.creationDate = moment(this.actualDate).format('YYYY-MM-DD');
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
