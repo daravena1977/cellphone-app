@@ -3,6 +3,7 @@
     class="form-control contenedor"
     :validation-schema="validationSchema"
     v-slot="{ errors }"
+    @reset="resetForm"
   >
     <fieldset>
       <legend>{{ lengendProp }}</legend>
