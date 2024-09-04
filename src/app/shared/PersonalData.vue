@@ -3,7 +3,7 @@
     class="form-control contenedor"
     :validation-schema="validationSchema"
     v-slot="{ errors }"
-    @reset="resetForm"
+    ref="form"
   >
     <fieldset>
       <legend>{{ lengendProp }}</legend>
@@ -280,7 +280,8 @@ export default {
     saved(value) {
       if (value) {
         console.log(value, 'saved');
-        this.orderData = {};
+        this.resetForm()
+        //this.orderData = {};
         this.orderData.number = 0;
         this.orderData.creationDate = moment(this.actualDate).format(
           'YYYY-MM-DD'
@@ -320,6 +321,10 @@ export default {
   methods: {
     ...mapActions('repair', ['getCorrelativeWorkOrder', 'loadClientByDni']),
     ...mapMutations('repair', ['resetDataOrder', 'resetClientByDni']),
+
+    resetForm() {
+      this.$refs.form.resetForm()
+    },
 
     setStatus($event) {
       this.orderData.stateOrder = $event.target.value;
